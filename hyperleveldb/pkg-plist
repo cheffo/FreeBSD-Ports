@@ -1,0 +1,20 @@
+include/hyperleveldb/c.h
+include/hyperleveldb/cache.h
+include/hyperleveldb/comparator.h
+include/hyperleveldb/db.h
+include/hyperleveldb/env.h
+include/hyperleveldb/filter_policy.h
+include/hyperleveldb/iterator.h
+include/hyperleveldb/options.h
+include/hyperleveldb/replay_iterator.h
+include/hyperleveldb/slice.h
+include/hyperleveldb/status.h
+include/hyperleveldb/table.h
+include/hyperleveldb/table_builder.h
+include/hyperleveldb/write_batch.h
+lib/libhyperleveldb.a
+lib/libhyperleveldb.so
+lib/libhyperleveldb.so.0
+lib/libhyperleveldb.so.0.0.0
+libdata/pkgconfig/libhyperleveldb.pc
+@dir include/hyperleveldb

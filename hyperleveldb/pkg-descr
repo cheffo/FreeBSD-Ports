@@ -1,0 +1,14 @@
+HyperLevelDB is the data storage engine that powers HyperDex.
+We forked HyperLevelDB from Google's LevelDB and adapted it to more closely
+meet the needs of HyperDex.
+
+HyperLevelDB improves on LevelDB in two key ways:
+
+1: Improved parallelism: HyperLevelDB uses more fine-grained locking internally
+to provide higher throughput for multiple writer threads.
+2: Improved compaction: HyperLevelDB uses a different method of compaction that
+achieves higher throughput for write-heavy workloads, even as the database
+grows.
+
+WWW: http://hyperdex.org/performance/leveldb/
+WWW: https://github.com/rescrv/HyperLevelDB
