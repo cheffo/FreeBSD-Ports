@@ -18,6 +18,8 @@ USE_LDCONFIG=	yes
 USES=		autoreconf compiler:c++0x gmake libtool pkgconfig
 GNU_CONFIGURE=	yes
 
+ONLY_FOR_ARCHS=	amd64
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	rescrv
 GH_PROJECT=	HyperLevelDB
