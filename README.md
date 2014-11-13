@@ -18,3 +18,5 @@ suricata - https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=193220
 Default behavior is not changed.
 
 ==================
+
+Few more ports included now. gomdb, levigo and statik - those are currently build dependencies for InfluxDB
