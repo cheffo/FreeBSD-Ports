@@ -16,57 +16,67 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libnet.so:${PORTSDIR}/net/libnet \
 		libyaml.so:${PORTSDIR}/textproc/libyaml
 
-OPTIONS_DEFINE=	IPFW PRELUDE PORTS_PCAP TESTS JSON GEOIP HTP_PORT LUAJIT NSS NSPR SC
-OPTIONS_DEFAULT=IPFW PRELUDE HTP_PORT JSON GEOIP LUAJIT NSS NSPR SC
-OPTIONS_SUB=	yes
-
-IPFW_DESC=	Enable IPFW and IP Divert support for inline IDP
-PRELUDE_DESC=	Enable Prelude support for NIDS alerts
-PORTS_PCAP_DESC=Use libpcap from ports
-TESTS_DESC=	Enable unit tests in suricata binary
-JSON_DESC=	Enable Suricata JSON output
-GEOIP_DESC=	Enable GeoIP support for Suricata
-HTP_PORT_DESC=	Use libhtp from ports instead of bundled
-LUAJIT_DESC=	LuaJIT support
-NSS_DESC=	NSS crypto driver support
-NSPR_DESC=	NSPR support
-SC_DESC=	Build and install suricatasc
-
-USES=		gmake pkgconfig libtool pathfix
-USE_AUTOTOOLS=	aclocal autoconf automake
+USES=		autoreconf gmake pkgconfig libtool pathfix
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+
+INSTALL_TARGET=		install-strip
+PATHFIX_MAKEFILEIN=	Makefile.am
+
+OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON LUAJIT NSS NSPR PORTS_PCAP PRELUDE SC TESTS
+OPTIONS_DEFAULT=	GEOIP HTP_PORT IPFW JSON LUAJIT NSS NSPR PRELUDE SC
+OPTIONS_SUB=		yes
+
+GEOIP_DESC=		Enable GeoIP support
+HTP_PORT_DESC=		Use libhtp from ports
+IPFW_DESC=		Enable IPFW and IP Divert support for inline IDP
+JSON_DESC=		Enable JSON output
+LUAJIT_DESC=		LuaJIT support
+NSS_DESC=		NSS crypto driver support
+NSPR_DESC=		NSPR support
+PORTS_PCAP_DESC=	Use libpcap from ports
+PRELUDE_DESC=		Enable Prelude support for NIDS alerts
+SC_DESC=		Build and install suricatasc
+TESTS_DESC=		Enable unit tests in suricata binary
+
+GEOIP_LIB_DEPENDS=		libGeoIP.so:${PORTSDIR}/net/GeoIP
+GEOIP_CONFIGURE_ON=		--enable-geoip
+
+HTP_PORT_LIB_DEPENDS=		libhtp.so:${PORTSDIR}/devel/libhtp
+HTP_PORT_CONFIGURE_ON=		--enable-non-bundled-htp
+HTP_PORT_CONFIGURE_OFF=		--enable-bundled-htp
+HTP_PORT_CONFLICTS_INSTALL_OFF=	libhtp-[0-9]* libhtp-suricata
+HTP_PORT_USES_OFF=		iconv
 
 IPFW_CONFIGURE_ON=		--enable-ipfw
+
+PORTS_PCAP_LIB_DEPENDS=		libpcap.so:${PORTSDIR}/net/libpcap
 PORTS_PCAP_CONFIGURE_ON=	--with-libpcap-includes=${LOCALBASE}/include \
 				--with-libpcap-libraries=${LOCALBASE}/lib
 PORTS_PCAP_CONFIGURE_OFF=	--with-libpcap-includes=/usr/include \
 				--with-libpcap-libraries=/usr/lib
-PORTS_PCAP_LIB_DEPENDS=		libpcap.so:${PORTSDIR}/net/libpcap
+
 PRELUDE_LIB_DEPENDS=		libprelude.so:${PORTSDIR}/security/libprelude
 PRELUDE_CONFIGURE_ENABLE=	prelude
 PRELUDE_CONFIGURE_ON=		--with-libprelude-prefix=${LOCALBASE}
-TESTS_CONFIGURE_ENABLE=		unittests
-JSON_CONFIGURE_ON=		--with-libjansson-includes=${LOCALBASE}/include	\
-				--with-libjansson-libraries=${LOCALBASE}/lib
+
 JSON_LIB_DEPENDS=		libjansson.so:${PORTSDIR}/devel/jansson
-GEOIP_CONFIGURE_ON=		--enable-geoip
-GEOIP_LIB_DEPENDS=		libGeoIP.so:${PORTSDIR}/net/GeoIP
-HTP_PORT_CONFIGURE_ON=		--enable-non-bundled-htp \
-				--with-libhtp-includes=${LOCALBASE}/include/ \
-				--with-libhtp-libraries=${LOCALBASE}/lib
-HTP_PORT_LIB_DEPENDS=		libhtp.so:${PORTSDIR}/devel/libhtp
-HTP_PORT_CONFLICT_OFF=		libhtp-[0-9]* libhtp-suricata
+JSON_CONFIGURE_ON=		--with-libjansson-includes=${LOCALBASE}/include \
+				--with-libjansson-libraries=${LOCALBASE}/lib
+
 LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:${PORTSDIR}/lang/luajit
 LUAJIT_CONFIGURE_ON=		--enable-luajit
+
 NSS_LIB_DEPENDS=		libnss3.so:${PORTSDIR}/security/nss
-NSS_CONFIGURE_ON=		--with-libnss-libraries=${LOCALBASE}/lib \
-				--with-libnss-includes=${LOCALBASE}/include/nss
+NSS_CONFIGURE_ON=		--with-libnss-includes=${LOCALBASE}/include/nss/nss \
+				--with-libnss-libraries=${LOCALBASE}/lib
+
 NSPR_LIB_DEPENDS=		libnspr4.so:${PORTSDIR}/devel/nspr
 NSPRS_CONFIGURE_ON=		--with-libnspr-libraries=${LOCALBASE}/lib \
 				--with-libnspr-includes=${LOCALBASE}/include/nspr
+
+TESTS_CONFIGURE_ENABLE=		unittests
 
 SUB_FILES=	pkg-message
 
@@ -77,15 +87,16 @@ CONFIGURE_ARGS+=--enable-gccprotect \
 		--with-libyaml-libraries=${LOCALBASE}/lib \
 		--with-libnet-includes=${LOCALBASE}/include/libnet11 \
 		--with-libnet-libraries=${LOCALBASE}/lib/libnet11 \
+		--with-libhtp-includes=${LOCALBASE}/include/ \
+		--with-libhtp-libraries=${LOCALBASE}/lib \
 		--localstatedir=/var/
 
 LIBNET_CONFIG?=	${LOCALBASE}/bin/libnet11-config
 CONFIG_DIR?=	${ETCDIR}
 CONFIG_FILES=	suricata.yaml classification.config reference.config
 RULES_DIR=	${CONFIG_DIR}/rules
+RULES_FILES=	decoder-events.rules dns-events.rules files.rules http-events.rules smtp-events.rules stream-events.rules tls-events.rules
 LOGS_DIR?=	/var/log/${PORTNAME}
-
-PLIST_SUB=	LOGS_DIR=${LOGS_DIR}
 
 .include <bsd.port.options.mk>
 
@@ -99,12 +110,6 @@ PLIST_SUB+=	MSC="@comment "
 .endif
 
 .include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MHTP_PORT}
-PLIST_SUB+=	HTPPORT="@comment "
-.else
-PLIST_SUB+=	HTPPORT=""
-.endif
 
 .if ${ARCH} == "ia64" || ${ARCH} == "powerpc" || ${ARCH} == "sparc64"
 BROKEN=		Does not compile on ia64, powerpc, or sparc64
@@ -120,6 +125,10 @@ post-install:
 .for f in ${CONFIG_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${CONFIG_DIR}/${f}.sample
 .endfor
+.for f in ${RULES_FILES}
+	${INSTALL_DATA} ${WRKSRC}/rules/${f} ${STAGEDIR}${RULES_DIR}/${f}
+.endfor
+
 .if ${PORT_OPTIONS:MSC}
 	(cd ${STAGEDIR}${PREFIX} \
 	&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
