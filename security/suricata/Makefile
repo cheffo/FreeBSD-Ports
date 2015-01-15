@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-PORTVERSION=	2.0.5
+PORTVERSION=	2.0.6
 CATEGORIES=	security
 MASTER_SITES=	http://www.openinfosecfoundation.org/download/ \
 		http://mirrors.rit.edu/zi/
@@ -16,8 +16,8 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libnet.so:${PORTSDIR}/net/libnet \
 		libyaml.so:${PORTSDIR}/textproc/libyaml
 
-OPTIONS_DEFINE=	IPFW PRELUDE PORTS_PCAP TESTS JSON GEOIP HTP_PORT LUAJIT NSS NSPR
-OPTIONS_DEFAULT=IPFW PRELUDE HTP_PORT JSON GEOIP LUAJIT NSS NSPR
+OPTIONS_DEFINE=	IPFW PRELUDE PORTS_PCAP TESTS JSON GEOIP HTP_PORT LUAJIT NSS NSPR SC
+OPTIONS_DEFAULT=IPFW PRELUDE HTP_PORT JSON GEOIP LUAJIT NSS NSPR SC
 OPTIONS_SUB=	yes
 
 IPFW_DESC=	Enable IPFW and IP Divert support for inline IDP
@@ -30,6 +30,7 @@ HTP_PORT_DESC=	Use libhtp from ports instead of bundled
 LUAJIT_DESC=	LuaJIT support
 NSS_DESC=	NSS crypto driver support
 NSPR_DESC=	NSPR support
+SC_DESC=	Build and install suricatasc
 
 USES=		gmake pkgconfig libtool pathfix
 USE_AUTOTOOLS=	aclocal autoconf automake
@@ -77,7 +78,6 @@ CONFIGURE_ARGS+=--enable-gccprotect \
 		--with-libnet-includes=${LOCALBASE}/include/libnet11 \
 		--with-libnet-libraries=${LOCALBASE}/lib/libnet11 \
 		--localstatedir=/var/
-CONFIGURE_ENV+=	ac_cv_path_HAVE_PYTHON_CONFIG=no
 
 LIBNET_CONFIG?=	${LOCALBASE}/bin/libnet11-config
 CONFIG_DIR?=	${ETCDIR}
@@ -86,6 +86,17 @@ RULES_DIR=	${CONFIG_DIR}/rules
 LOGS_DIR?=	/var/log/${PORTNAME}
 
 PLIST_SUB=	LOGS_DIR=${LOGS_DIR}
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MSC}
+USES+=		python
+CONFIGURE_ENV+=	ac_cv_path_HAVE_PYTHON_CONFIG=yes
+PLIST_SUB+=	MSC=""
+.else
+CONFIGURE_ENV+=	ac_cv_path_HAVE_PYTHON_CONFIG=no
+PLIST_SUB+=	MSC="@comment "
+.endif
 
 .include <bsd.port.pre.mk>
 
@@ -109,6 +120,11 @@ post-install:
 .for f in ${CONFIG_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${CONFIG_DIR}/${f}.sample
 .endfor
+.if ${PORT_OPTIONS:MSC}
+	(cd ${STAGEDIR}${PREFIX} \
+	&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+	-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;})
+.endif
 
 TMPDIR?=	/tmp
 TESTDIR=	${TMPDIR}/${PORTNAME}
