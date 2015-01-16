@@ -76,7 +76,7 @@ NSPR_LIB_DEPENDS=		libnspr4.so:${PORTSDIR}/devel/nspr
 NSPR_CONFIGURE_ON=		--with-libnspr-libraries=${LOCALBASE}/lib \
 				--with-libnspr-includes=${LOCALBASE}/include/nspr
 
-SC_USE=				python
+SC_USES=			python
 SC_CONFIGURE_ENV=		ac_cv_path_HAVE_PYTHON_CONFIG=yes
 SC_CONFIGURE_ENV_OFF=		ac_cv_path_HAVE_PYTHON_CONFIG=no
 
