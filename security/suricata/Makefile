@@ -73,7 +73,7 @@ NSS_CONFIGURE_ON=		--with-libnss-includes=${LOCALBASE}/include/nss/nss \
 				--with-libnss-libraries=${LOCALBASE}/lib
 
 NSPR_LIB_DEPENDS=		libnspr4.so:${PORTSDIR}/devel/nspr
-NSPRS_CONFIGURE_ON=		--with-libnspr-libraries=${LOCALBASE}/lib \
+NSPR_CONFIGURE_ON=		--with-libnspr-libraries=${LOCALBASE}/lib \
 				--with-libnspr-includes=${LOCALBASE}/include/nspr
 
 TESTS_CONFIGURE_ENABLE=		unittests
