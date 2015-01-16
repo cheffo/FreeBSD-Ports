@@ -76,6 +76,10 @@ NSPR_LIB_DEPENDS=		libnspr4.so:${PORTSDIR}/devel/nspr
 NSPR_CONFIGURE_ON=		--with-libnspr-libraries=${LOCALBASE}/lib \
 				--with-libnspr-includes=${LOCALBASE}/include/nspr
 
+SC_USE=				python
+SC_CONFIGURE_ENV=		ac_cv_path_HAVE_PYTHON_CONFIG=yes
+SC_CONFIGURE_ENV_OFF=		ac_cv_path_HAVE_PYTHON_CONFIG=no
+
 TESTS_CONFIGURE_ENABLE=		unittests
 
 SUB_FILES=	pkg-message
@@ -97,17 +101,6 @@ CONFIG_FILES=	suricata.yaml classification.config reference.config
 RULES_DIR=	${CONFIG_DIR}/rules
 RULES_FILES=	decoder-events.rules dns-events.rules files.rules http-events.rules smtp-events.rules stream-events.rules tls-events.rules
 LOGS_DIR?=	/var/log/${PORTNAME}
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSC}
-USES+=		python
-CONFIGURE_ENV+=	ac_cv_path_HAVE_PYTHON_CONFIG=yes
-PLIST_SUB+=	MSC=""
-.else
-CONFIGURE_ENV+=	ac_cv_path_HAVE_PYTHON_CONFIG=no
-PLIST_SUB+=	MSC="@comment "
-.endif
 
 .include <bsd.port.pre.mk>
 

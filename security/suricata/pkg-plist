@@ -1,5 +1,5 @@
 bin/suricata
-%%MSC%%bin/suricatasc
+%%SC%%bin/suricatasc
 %%DOCSDIR%%/AUTHORS
 %%DOCSDIR%%/Basic_Setup.txt
 %%DOCSDIR%%/CentOS5.txt
