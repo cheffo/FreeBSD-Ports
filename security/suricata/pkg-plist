@@ -51,11 +51,11 @@ bin/suricata
 %%NO_HTP_PORT%%lib/libhtp.so
 %%NO_HTP_PORT%%libdata/pkgconfig/htp.pc
 %%NO_HTP_PORT%%@dir include/htp
-%%MSC%%%%PYTHON_SITELIBDIR%%/suricatasc-0.9-py%%PYTHON_VER%%.egg-info
-%%MSC%%%%PYTHON_SITELIBDIR%%/suricatasc/__init__.py
-%%MSC%%%%PYTHON_SITELIBDIR%%/suricatasc/__init__.pyc
-%%MSC%%%%PYTHON_SITELIBDIR%%/suricatasc/suricatasc.py
-%%MSC%%%%PYTHON_SITELIBDIR%%/suricatasc/suricatasc.pyc
+%%SC%%%%PYTHON_SITELIBDIR%%/suricatasc-0.9-py%%PYTHON_VER%%.egg-info
+%%SC%%%%PYTHON_SITELIBDIR%%/suricatasc/__init__.py
+%%SC%%%%PYTHON_SITELIBDIR%%/suricatasc/__init__.pyc
+%%SC%%%%PYTHON_SITELIBDIR%%/suricatasc/suricatasc.py
+%%SC%%%%PYTHON_SITELIBDIR%%/suricatasc/suricatasc.pyc
 @sample %%ETCDIR%%/suricata.yaml.sample
 @sample %%ETCDIR%%/classification.config.sample
 @sample %%ETCDIR%%/reference.config.sample
