@@ -1,5 +1,5 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD$
+# $FreeBSD: head/security/suricata/Makefile 377282 2015-01-18 07:12:37Z koobs $
 
 PORTNAME=	suricata
 PORTVERSION=	2.0.6
@@ -11,6 +11,7 @@ MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	High Performance Network IDS, IPS and Security Monitoring engine
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libnet.so:${PORTSDIR}/net/libnet \
@@ -24,21 +25,25 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=		install-strip
 PATHFIX_MAKEFILEIN=	Makefile.am
 
-OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON LUAJIT NSS NSPR PORTS_PCAP PRELUDE SC TESTS
-OPTIONS_DEFAULT=	GEOIP HTP_PORT IPFW JSON LUAJIT NSS NSPR PRELUDE SC
+OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON NSS PORTS_PCAP PRELUDE SC TESTS
+OPTIONS_DEFAULT=	GEOIP HTP_PORT IPFW JSON LUAJIT NSS PRELUDE SC
+OPTIONS_RADIO=		SCRIPTS
+OPTIONS_RADIO_SCRIPTS=	LUA LUAJIT
 OPTIONS_SUB=		yes
 
-GEOIP_DESC=		Enable GeoIP support
+SCRIPTS_DESC=		Scripting
+
+GEOIP_DESC=		GeoIP support
 HTP_PORT_DESC=		Use libhtp from ports
-IPFW_DESC=		Enable IPFW and IP Divert support for inline IDP
-JSON_DESC=		Enable JSON output
-LUAJIT_DESC=		LuaJIT support
-NSS_DESC=		NSS crypto driver support
-NSPR_DESC=		NSPR support
+IPFW_DESC=		IPFW and IP Divert support for inline IDP
+JSON_DESC=		JSON output support
+LUA_DESC=		LUA scripting support
+LUAJIT_DESC=		LuaJIT scripting support
+NSS_DESC=		File checksums and SSL/TLS fingerprinting
 PORTS_PCAP_DESC=	Use libpcap from ports
-PRELUDE_DESC=		Enable Prelude support for NIDS alerts
-SC_DESC=		Build and install suricatasc
-TESTS_DESC=		Enable unit tests in suricata binary
+PRELUDE_DESC=		Prelude support for NIDS alerts
+SC_DESC=		Suricata socket client (suricatasc)
+TESTS_DESC=		Unit tests in suricata binary
 
 GEOIP_LIB_DEPENDS=		libGeoIP.so:${PORTSDIR}/net/GeoIP
 GEOIP_CONFIGURE_ON=		--enable-geoip
@@ -65,15 +70,19 @@ JSON_LIB_DEPENDS=		libjansson.so:${PORTSDIR}/devel/jansson
 JSON_CONFIGURE_ON=		--with-libjansson-includes=${LOCALBASE}/include \
 				--with-libjansson-libraries=${LOCALBASE}/lib
 
+LUA_USES=			lua
+LUA_CONFIGURE_ON=		--enable-lua \
+				--with-liblua-includes=${LUA_INCDIR} \
+				--with-liblua-libraries=${LUA_LIBDIR}
+
 LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:${PORTSDIR}/lang/luajit
 LUAJIT_CONFIGURE_ON=		--enable-luajit
 
-NSS_LIB_DEPENDS=		libnss3.so:${PORTSDIR}/security/nss
+NSS_LIB_DEPENDS=		libnss3.so:${PORTSDIR}/security/nss \
+				libnspr4.so:${PORTSDIR}/devel/nspr
 NSS_CONFIGURE_ON=		--with-libnss-includes=${LOCALBASE}/include/nss/nss \
-				--with-libnss-libraries=${LOCALBASE}/lib
-
-NSPR_LIB_DEPENDS=		libnspr4.so:${PORTSDIR}/devel/nspr
-NSPR_CONFIGURE_ON=		--with-libnspr-libraries=${LOCALBASE}/lib \
+				--with-libnss-libraries=${LOCALBASE}/lib \
+				--with-libnspr-libraries=${LOCALBASE}/lib \
 				--with-libnspr-includes=${LOCALBASE}/include/nspr
 
 SC_USES=			python
@@ -115,9 +124,11 @@ post-install:
 	${MKDIR} ${STAGEDIR}${CONFIG_DIR}
 	${MKDIR} ${STAGEDIR}${RULES_DIR}
 	${MKDIR} ${STAGEDIR}${LOGS_DIR}
+
 .for f in ${CONFIG_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${CONFIG_DIR}/${f}.sample
 .endfor
+
 .for f in ${RULES_FILES}
 	${INSTALL_DATA} ${WRKSRC}/rules/${f} ${STAGEDIR}${RULES_DIR}/${f}
 .endfor
