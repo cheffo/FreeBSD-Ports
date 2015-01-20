@@ -4,4 +4,4 @@
  m4_include([m4/ltsugar.m4])
  m4_include([m4/ltversion.m4])
  m4_include([m4/lt~obsolete.m4])
-+m4_include([4m4/ax_lua.m4])
++m4_include([m4/ax_lua.m4])
