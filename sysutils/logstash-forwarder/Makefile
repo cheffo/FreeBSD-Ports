@@ -16,6 +16,7 @@ GH_ACCOUNT=	elasticsearch
 GH_PROJECT=	logstash-forwarder
 GH_TAGNAME=	${GH_COMMIT}
 GH_COMMIT=	9c69a36
+
 USE_RC_SUBR=	logstash-forwarder
 SUB_FILES=	pkg-message
 
