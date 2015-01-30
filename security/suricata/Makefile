@@ -1,5 +1,5 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD: head/security/suricata/Makefile 377282 2015-01-18 07:12:37Z koobs $
+# $FreeBSD: head/security/suricata/Makefile 377991 2015-01-27 10:47:48Z koobs $
 
 PORTNAME=	suricata
 PORTVERSION=	2.0.6
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libnet.so:${PORTSDIR}/net/libnet \
 		libyaml.so:${PORTSDIR}/textproc/libyaml
 
-USES=		autoreconf gmake pkgconfig libtool pathfix
+USES=		autoreconf gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
@@ -26,7 +26,7 @@ INSTALL_TARGET=		install-strip
 PATHFIX_MAKEFILEIN=	Makefile.am
 
 OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON NSS PORTS_PCAP PRELUDE SC TESTS
-OPTIONS_DEFAULT=	GEOIP HTP_PORT IPFW JSON LUAJIT NSS PRELUDE SC
+OPTIONS_DEFAULT=	HTP_PORT IPFW PRELUDE
 OPTIONS_RADIO=		SCRIPTS
 OPTIONS_RADIO_SCRIPTS=	LUA LUAJIT
 OPTIONS_SUB=		yes
@@ -52,7 +52,7 @@ HTP_PORT_LIB_DEPENDS=		libhtp.so:${PORTSDIR}/devel/libhtp
 HTP_PORT_CONFIGURE_ON=		--enable-non-bundled-htp
 HTP_PORT_CONFIGURE_OFF=		--enable-bundled-htp
 HTP_PORT_CONFLICTS_INSTALL_OFF=	libhtp-[0-9]* libhtp-suricata
-HTP_PORT_USES_OFF=		iconv
+HTP_PORT_USES_OFF=		iconv:translit
 
 IPFW_CONFIGURE_ON=		--enable-ipfw
 
@@ -70,7 +70,7 @@ JSON_LIB_DEPENDS=		libjansson.so:${PORTSDIR}/devel/jansson
 JSON_CONFIGURE_ON=		--with-libjansson-includes=${LOCALBASE}/include \
 				--with-libjansson-libraries=${LOCALBASE}/lib
 
-LUA_USES=			lua
+LUA_USES=			lua:51
 LUA_CONFIGURE_ON=		--enable-lua \
 				--with-liblua-includes=${LUA_INCDIR} \
 				--with-liblua-libraries=${LUA_LIBDIR}
