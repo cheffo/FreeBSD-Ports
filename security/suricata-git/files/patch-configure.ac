@@ -1,0 +1,34 @@
+--- configure.ac.orig	2015-01-15 11:08:50.000000000 +0200
++++ configure.ac	2015-01-19 18:56:57.750653398 +0200
+@@ -173,6 +173,7 @@
+     AC_MSG_CHECKING([host os])
+ 
+     # lua pkg-config name differs per OS
++    AX_PROG_LUA(5.1, 5.3)
+     LUA_PC_NAME="lua5.1"
+     LUA_LIB_NAME="lua5.1"
+ 
+@@ -185,8 +186,8 @@
+     e_magic_file="/usr/share/file/magic"
+     case "$host" in
+         *-*-*freebsd*)
+-            LUA_PC_NAME="lua-5.1"
+-            LUA_LIB_NAME="lua-5.1"
++            LUA_PC_NAME="lua-${LUA_VERSION}"
++            LUA_LIB_NAME="lua-${LUA_VERSION}"
+             CFLAGS="${CFLAGS} -DOS_FREEBSD"
+             CPPFLAGS="${CPPFLAGS} -I/usr/local/include -I/usr/local/include/libnet11"
+             LDFLAGS="${LDFLAGS} -L/usr/local/lib -L/usr/local/lib/libnet11"
+@@ -817,8 +818,10 @@
+             AS_HELP_STRING([--enable-prelude], [Enable Prelude support for alerts]),,[enable_prelude=no])
+     # Prelude doesn't work with -Werror
+     STORECFLAGS="${CFLAGS}"
+-    CFLAGS="${CFLAGS} -Wno-error=unused-result"
+-
++    AX_CHECK_COMPILE_FLAG([-Wno-error=unused-result], 
++        [CFLAGS="${CFLAGS} -Wno-error=unused-result"],
++        [])
++       
+     AS_IF([test "x$enable_prelude" = "xyes"], [
+         AM_PATH_LIBPRELUDE(0.9.9, , AC_MSG_ERROR(Cannot find libprelude: Is libprelude-config in the path?), no)
+         if test "x${LIBPRELUDE_CFLAGS}" != "x"; then
