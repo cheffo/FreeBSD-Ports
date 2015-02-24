@@ -13,6 +13,8 @@ BUILD_DEPENDS=	go:${PORTSDIR}/lang/go
 
 ONLY_FOR_ARCHS=	i386 amd64
 
+USES=		compiler
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	szferi
 GH_PROJECT=	gomdb
@@ -21,19 +23,13 @@ GH_COMMIT=	6bcb5a8
 
 .include <bsd.port.pre.mk>
 
-.if ${OSVERSION} >= 900033 && exists(/usr/bin/clang)
+.if ${COMPILER_TYPE} == clang
 CC=		clang
-CXX=		clang++
-GYP_DEFINES+=	clang=1
 .else
 USE_GCC?=	yes
-GYP_DEFINES+=	gcc_version=${CXX:S/g++//}
 .endif
 
-CONFIGURE_ENV+=	CC=${CC} \
-		CXX=${CXX} \
-		GYP_DEFINES="${GYP_DEFINES}"
-
+CONFIGURE_ENV+=	CC=${CC}
 GO_ENV+=	${CONFIGURE_ENV}
 
 .include "${.CURDIR}/../../lang/go/files/bsd.go.mk"
