@@ -41,10 +41,7 @@ GH_PROJECT=	influxdb
 GH_COMMIT=	2e5e225
 GH_TAGNAME=	${GH_COMMIT}
 
-#WRKSRC=		${WRKDIR}/src/${GH_PROJECT}
-#GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
-
-PLIST_FILES=	influx influxd
+PLIST_FILES=	bin/influx bin/influxd
 
 USE_RC_SUBR=	influxdb
 
@@ -74,6 +71,7 @@ post-patch:
 
 do-build:
 		@cd ${WRKDIR}/src/github.com/influxdb/ &&  ${SETENV} ${GO_ENV} go get ./...
+		@cd ${WRKDIR}/src/github.com/influxdb/ &&  ${SETENV} ${GO_ENV} go build ./...
 
 post-install:
 		${INSTALL_PROGRAM} ${WRKDIR}/bin/influxd ${STAGEDIR}${PREFIX}/bin/influxd
