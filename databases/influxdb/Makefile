@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	influxdb
-DISTVERSION=	v0.9.0-rc4
+DISTVERSION=	v0.9.0-rc5
 CATEGORIES=	databases
 MASTER_SITES=	GITHUB:github	\
 		https://github.com/BurntSushi/toml/tarball/master/:toml \
