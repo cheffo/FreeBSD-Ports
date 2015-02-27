@@ -1,22 +1,13 @@
 FreeBSD Ports
 ==================
 
-hyperleveldb - FreeBSD Port for https://github.com/rescrv/HyperLevelDB
+Some ports which I maintain, send patches or keep local copy (because they do not get updated fast enough from upstream)
 
-* Additional this port renames all "leveldb" stuff to "hyperleveldb", so it can be used by influxdb.
-
-==================
-
-suricata - https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=193220
-
-* security/suricata: Change summary
-
-- Added JSON knob - this allows Suricata to be compiled with JSON output support
-- Added GEOIP knob - this allows Suricata to support rules with geoip word
-- Added HTP_PORT knob - this make the use of www/libhtp-suricata optional. E.g. user can choose between build-in and port version.
-
-Default behavior is not changed.
-
-==================
-
-Few more ports included now. gomdb, levigo and statik - those are currently build dependencies for InfluxDB
+databases/gomdb: needed for old versions of influxdb.
+databases/hyperleveldb:  needed for old versions of influxdb.
+databases/influxdb: FreeBSD port of InfluxDB 0.9.0-(something).
+databases/levigo: needed for old versions of influxdb.
+devel/statik: needed for old versions of influxdb.
+security/suricata: some experiments with suricata.
+sysutils/logstash-forwarder: FreeBSD port for LSF.
+textproc/elasticsearch: maintainer is not responding so I'm updating the port myself.
