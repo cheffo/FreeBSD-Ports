@@ -42,6 +42,7 @@ GH_COMMIT=	2e5e225
 GH_TAGNAME=	${GH_COMMIT}
 
 USE_RC_SUBR=	influxd
+
 STRIP=		# stripping can break go binaries
 
 post-patch:
@@ -73,7 +74,10 @@ do-build:
 post-install:
 		${INSTALL_PROGRAM} ${WRKDIR}/bin/influxd ${STAGEDIR}${PREFIX}/bin/influxd
 		${INSTALL_PROGRAM} ${WRKDIR}/bin/influx ${STAGEDIR}${PREFIX}/bin/influx
+		@${SED} -i .bak -e "s|/tmp/influxdb/development|/var/db/influxdb|g" ${WRKDIR}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/etc/config.sample.toml
 		${INSTALL_DATA} ${WRKDIR}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/etc/config.sample.toml  ${STAGEDIR}${PREFIX}/etc/influxd.conf.sample
+		@${MKDIR} ${STAGEDIR}/var/db/influxdb
+		@${MKDIR} ${STAGEDIR}/var/log/influxdb
 
 .include <bsd.port.pre.mk>
 .include "${.CURDIR}/../../lang/go/files/bsd.go.mk"

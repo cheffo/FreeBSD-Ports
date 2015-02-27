@@ -1,3 +1,5 @@
 bin/influx
 bin/influxd
+@dir /var/db/influxdb
+@dir /var/log/influxdb
 @sample etc/influxd.conf.sample
