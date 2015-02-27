@@ -1,0 +1,34 @@
+#!/bin/sh
+# $FreeBSD$
+
+# PROVIDE: influxd
+# REQUIRE: DAEMON
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable influxdb:
+# influxd_enabe="YES"
+#
+# influxd_enable (bool):	Set to YES to enable influxd
+#				Default: NO
+# influxd_conf (str):		influxd configuration file
+#				Default: ${PREFIX}/etc/influxd.conf
+# influxd_flags (str):		Extra flags passed to influxd
+
+
+. /etc/rc.subr
+
+name="influxd"
+rcvar=influxd_enable
+
+command="%%PREFIX%%/bin/influxd"
+command_args='> /dev/null 2>&1 &'
+
+load_rc_config $name
+
+[ -z "$influxd_enable" ]	&& influxd_enable="NO"
+[ -z "$influxd_conf" ]		&& influxd_conf="%%PREFIX%%/etc/influxd.conf"
+[ -z "$influxd_flags" ]		&& influxd_flags=""
+[ -n "$influxd_conf" ]		&& influxd_flags="$influxd_flags -config=$influxd_conf"
+
+run_rc_command "$1"

@@ -41,10 +41,7 @@ GH_PROJECT=	influxdb
 GH_COMMIT=	2e5e225
 GH_TAGNAME=	${GH_COMMIT}
 
-PLIST_FILES=	bin/influx bin/influxd
-
-USE_RC_SUBR=	influxdb
-
+USE_RC_SUBR=	influxd
 STRIP=		# stripping can break go binaries
 
 post-patch:
@@ -57,7 +54,7 @@ post-patch:
 	@${MKDIR} ${WRKDIR}/src/github.com/peterh
 	@${MKDIR} ${WRKDIR}/src/github.com/rakyll
 	@${MKDIR} ${WRKDIR}/src/golang.org/x/crypto
-	@${MV} ${WRKDIR}/influxdb-influxdb-${GH_COMMIT} ${WRKDIR}/src/github.com/influxdb/influxdb
+	@${MV} ${WRKDIR}/${GH_ACCOUNT}-${GH_PROJECT}-${GH_COMMIT} ${WRKDIR}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
 	@${MV} ${WRKDIR}/go-uuid-35bc42037350 ${WRKDIR}/src/code.google.com/p/go-uuid
 	@${MV} ${WRKDIR}/log4go-c3294304d93f ${WRKDIR}/src/code.google.com/p/log4go
 	@${MV} ${WRKDIR}/BurntSushi-toml-443a628 ${WRKDIR}/src/github.com/BurntSushi/toml
@@ -76,6 +73,7 @@ do-build:
 post-install:
 		${INSTALL_PROGRAM} ${WRKDIR}/bin/influxd ${STAGEDIR}${PREFIX}/bin/influxd
 		${INSTALL_PROGRAM} ${WRKDIR}/bin/influx ${STAGEDIR}${PREFIX}/bin/influx
+		${INSTALL_DATA} ${WRKDIR}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/etc/config.sample.toml  ${STAGEDIR}${PREFIX}/etc/influxd.conf.sample
 
 .include <bsd.port.pre.mk>
 .include "${.CURDIR}/../../lang/go/files/bsd.go.mk"
