@@ -4,12 +4,12 @@ PORTNAME=	influxdb
 DISTVERSION=	v0.9.0-rc5
 CATEGORIES=	databases
 MASTER_SITES=	GITHUB:github	\
-		https://github.com/BurntSushi/toml/tarball/master/:toml \
-		https://github.com/bmizerany/pat/tarball/master/:pat \
-		https://github.com/boltdb/bolt/tarball/master/:bolt \
-		https://github.com/kimor79/gollectd/tarball/master/:gollectd \
-		https://github.com/peterh/liner/tarball/master/:liner \
-		https://github.com/rakyll/statik/tarball/master/:statik \
+		https://codeload.github.com/BurntSushi/toml/legacy.tar.gz/443a628?dummy=/:toml \
+		https://codeload.github.com/bmizerany/pat/legacy.tar.gz/b8a3500?dummy=/:pat \
+		https://codeload.github.com/boltdb/bolt/legacy.tar.gz/a7d19d8?dummy=/:bolt \
+		https://codeload.github.com/kimor79/gollectd/legacy.tar.gz/1d0fc88?dummy=/:gollectd \
+		https://codeload.github.com/peterh/liner/legacy.tar.gz/d3fd034?dummy=/:liner \
+		https://codeload.github.com/rakyll/statik/legacy.tar.gz/4a16c83?dummy=/:statik \
 		https://log4go.googlecode.com/archive/:log4go \
 		https://go.googlesource.com/crypto/+archive/:crypto \
 		https://go-uuid.googlecode.com/archive/:uuid
