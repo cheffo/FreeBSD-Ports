@@ -101,8 +101,7 @@ do-build:
 		@cd ${WRKDIR}/src/github.com/influxdb/ &&  ${SETENV} ${GO_ENV} go build ./...
 
 do-install:
-		${MKDIR} ${STAGEDIR}${ETCDIR} \
-		${STAGEDIR}${INFLUXD_DBDIR} \
+		${MKDIR} ${STAGEDIR}${INFLUXD_DBDIR} \
 		${STAGEDIR}${INFLUXD_PIDDIR} \
 		${STAGEDIR}${INFLUXD_LOGDIR}
 
