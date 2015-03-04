@@ -2,33 +2,46 @@
 # $FreeBSD$
 
 # PROVIDE: influxd
-# REQUIRE: DAEMON
+# REQUIRE: DAEMON NETWORKING
 # BEFORE: LOGIN
 # KEYWORD: shutdown
 
 # Add the following lines to /etc/rc.conf to enable influxdb:
-# influxd_enabe="YES"
+# influxd_enable="YES"
 #
 # influxd_enable (bool):	Set to YES to enable influxd
 #				Default: NO
 # influxd_conf (str):		influxd configuration file
 #				Default: ${PREFIX}/etc/influxd.conf
+# influxd_user (str):		influxd daemon user
+#				Default: ${name}
+# influxd_group (str):		influxd daemon group
+#				Default: ${name}
 # influxd_flags (str):		Extra flags passed to influxd
-
 
 . /etc/rc.subr
 
 name="influxd"
 rcvar=influxd_enable
 
-command="%%PREFIX%%/bin/influxd"
-command_args='> /dev/null 2>&1 &'
+: ${influxd_enable:="NO"}
+: ${influxd_user:="%%INFLUXD_USER%%"}
+: ${influxd_group:="%%INFLUXD_GROUP%%"}
+: ${influxd_flags:=""}
+: ${influxd_conf:="%%PREFIX%%/etc/${name}/${name}.conf"}
+: ${influxd_options:="${influxdb_flags} -config=${influxd_conf}"}
+
+# daemon
+influxd_pidfile="%%INFLUXD_PIDDIR%%${name}.pid"
+procname="%%PREFIX%%/bin/${name}"
+command=/usr/sbin/daemon
+command_args=" -f -c -p ${influxd_pidfile} ${procname} ${influxd_options}"
+start_precmd="influxd_precmd"
+
+influxd_precmd()
+{
+    install -o ${influxd_user} /dev/null ${influxd_pidfile}
+}
 
 load_rc_config $name
-
-[ -z "$influxd_enable" ]	&& influxd_enable="NO"
-[ -z "$influxd_conf" ]		&& influxd_conf="%%PREFIX%%/etc/influxd.conf"
-[ -z "$influxd_flags" ]		&& influxd_flags=""
-[ -n "$influxd_conf" ]		&& influxd_flags="$influxd_flags -config=$influxd_conf"
-
 run_rc_command "$1"
