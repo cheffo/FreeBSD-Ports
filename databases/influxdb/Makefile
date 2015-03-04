@@ -73,6 +73,9 @@ INFLUXD_DBDIR=	/var/db/${PORTNAME}/
 INFLUXD_LOGDIR=	/var/log/${PORTNAME}/
 INFLUXD_PIDDIR=	/var/run/${PORTNAME}/
 
+USERS=		${INFLUXD_USER}
+GROUPS=		${INFLUXD_GROUP}
+
 STRIP=		# stripping can break go binaries
 
 post-patch:

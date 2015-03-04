@@ -14,9 +14,9 @@
 # influxd_conf (str):		influxd configuration file
 #				Default: ${PREFIX}/etc/influxd.conf
 # influxd_user (str):		influxd daemon user
-#				Default: ${name}
+#				Default: influxd
 # influxd_group (str):		influxd daemon group
-#				Default: ${name}
+#				Default: influxd
 # influxd_flags (str):		Extra flags passed to influxd
 
 . /etc/rc.subr
@@ -28,7 +28,7 @@ rcvar=influxd_enable
 : ${influxd_user:="%%INFLUXD_USER%%"}
 : ${influxd_group:="%%INFLUXD_GROUP%%"}
 : ${influxd_flags:=""}
-: ${influxd_conf:="%%PREFIX%%/etc/${name}/${name}.conf"}
+: ${influxd_conf:="%%PREFIX%%/etc/${name}.conf"}
 : ${influxd_options:="${influxdb_flags} -config=${influxd_conf}"}
 
 # daemon
