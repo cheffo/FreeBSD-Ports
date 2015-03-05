@@ -23,10 +23,12 @@ GH_COMMIT=	6bcb5a8
 
 .include <bsd.port.pre.mk>
 
+#Build fails on FreeBSD10+ if value of "CC" is not set to "clang" (checked by configure)
+
 .if ${COMPILER_TYPE} == clang
 CC=		clang
 .else
-USE_GCC?=	yes
+USE_GCC=	yes
 .endif
 
 CONFIGURE_ENV+=	CC=${CC}
