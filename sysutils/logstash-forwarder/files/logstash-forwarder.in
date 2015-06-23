@@ -1,5 +1,5 @@
 #!/bin/sh
-# $FreeBSD: head/sysutils/logstash-forwarder/files/logstash-forwarder.in 370686 2014-10-12 08:00:29Z riggs $
+# $FreeBSD$
 
 # PROVIDE: logstash_forwarder
 # REQUIRE: DAEMON
