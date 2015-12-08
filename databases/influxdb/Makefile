@@ -25,8 +25,7 @@ GH_ACCOUNT=	influxdb:DEFAULT \
 		boltdb:bolt \
 		cheffo:crypto,go_uuid \
 		collectd:go_collectd \
-		dgryski:go_bits \
-		dgryski:go_bitstream \
+		dgryski:go_bits,go_bitstream \
 		fatih:pool \
 		gogo:gogo_protobuf \
 		golang:golang_protobuf,golang_snappy \
