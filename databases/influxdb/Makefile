@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	influxdb
-PORTVERSION=	0.9.5.1
+PORTVERSION=	0.9.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases net-mgmt
 
@@ -34,14 +34,15 @@ GH_ACCOUNT=	influxdb:DEFAULT \
 		jwilder:encoding \
 		kimor79:gollectd \
 		peterh:liner \
-		rakyll:statik
+		rakyll:statik \
+		paulbellamy:ratecounter
 GH_PROJECT=	bolt:bolt crypto:crypto encoding:encoding \
 		enterprise-client:enterprise_client go-bits:go_bits \
 		go-bitstream:go_bitstream go-collectd:go_collectd \
 		go-metrics:go_metrics go-msgpack:go_msgpack gollectd:gollectd \
 		liner:liner log4go:log4go pat:pat pool:pool \
 		protobuf:gogo_protobuf protobuf:golang_protobuf \
-		raft-boltdb:raft_boltdb raft:raft \
+		raft-boltdb:raft_boltdb raft:raft ratecounter:ratecounter \
 		snappy:golang_snappy, statik:statik toml:toml go-uuid:go_uuid
 GH_TAGNAME=	b34b35e:bolt 056c9bc:toml 1351f93:crypto 4d47685:liner \
 		5c3c713:log4go 274df12:statik e492fd3:gogo_protobuf \
@@ -49,7 +50,7 @@ GH_TAGNAME=	b34b35e:bolt 056c9bc:toml 1351f93:crypto 4d47685:liner \
 		b8a3500:pat cba550e:pool d1e82c1:raft_boltdb ed3ca8a:go_uuid \
 		d136cd1:raft fa3f638:go_msgpack 723cc1e:golang_snappy \
 		9fc824c:go_collectd 86c69b3:go_bits 27cd597:go_bitstream \
-		07d88d4:encoding 25665cb:enterprise_client
+		07d88d4:encoding 25665cb:enterprise_client 5a11f58:ratecounter
 
 SUB_FILES=	influxd
 SUB_LIST+=	INFLUXD_USER=${INFLUXD_USER} \
@@ -91,6 +92,7 @@ post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/jwilder
 	@${MKDIR} ${WRKSRC}/src/github.com/influxdb
 	@${MKDIR} ${WRKSRC}/src/github.com/kimor79
+	@${MKDIR} ${WRKSRC}/src/github.com/paulbellamy
 	@${MKDIR} ${WRKSRC}/src/github.com/peterh
 	@${MKDIR} ${WRKSRC}/src/github.com/rakyll
 	@${MKDIR} ${WRKSRC}/src/golang.org/x
@@ -124,6 +126,7 @@ post-patch:
 	@${MV} ${WRKSRC_pool} ${WRKSRC}/src/github.com/fatih/pool
 	@${MV} ${WRKSRC_raft_boltdb} ${WRKSRC}/src/github.com/hashicorp/raft-boltdb
 	@${MV} ${WRKSRC_raft} ${WRKSRC}/src/github.com/hashicorp/raft
+	@${MV} ${WRKSRC_ratecounter} ${WRKSRC}/src/github.com/paulbellamy/ratecounter
 	@${MV} ${WRKSRC_statik} ${WRKSRC}/src/github.com/rakyll/statik
 	@${MV} ${WRKSRC_golang_snappy} ${WRKSRC}/src/github.com/golang/snappy
 	@${MV} ${WRKSRC_toml} ${WRKSRC}/src/github.com/BurntSushi/toml

@@ -29,7 +29,7 @@ rcvar=influxd_enable
 : ${influxd_group:="%%INFLUXD_GROUP%%"}
 : ${influxd_flags:=""}
 : ${influxd_conf:="%%PREFIX%%/etc/${name}.conf"}
-: ${influxd_options:="${influxdb_flags} -config=${influxd_conf} 2> %%INFLUXD_LOGDIR%%influxdb.log"}
+: ${influxd_options:="${influxdb_flags} -config=${influxd_conf} 2> %%INFLUXD_LOGDIR%%/influxdb.log"}
 
 # daemon
 influxd_pidfile="%%INFLUXD_PIDDIR%%${name}.pid"

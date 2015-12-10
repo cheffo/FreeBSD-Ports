@@ -1,5 +1,5 @@
-SHA256 (influxdb-influxdb-v0.9.5.1_GH0.tar.gz) = d823288a826188526831602ee834195266abb7d4a0db7c3638d8f86793a0ffd6
-SIZE (influxdb-influxdb-v0.9.5.1_GH0.tar.gz) = 1115599
+SHA256 (influxdb-influxdb-v0.9.6_GH0.tar.gz) = c782d03b3ce3a0b2512277225b3163f82fd3fd28356c06a592690e56f6cb8580
+SIZE (influxdb-influxdb-v0.9.6_GH0.tar.gz) = 1135911
 SHA256 (alecthomas-log4go-5c3c713_GH0.tar.gz) = ea492017025d02f1204ba744fc01130b547da7e07b661598cac83a3ca63c6255
 SIZE (alecthomas-log4go-5c3c713_GH0.tar.gz) = 16187
 SHA256 (armon-go-metrics-06b6099_GH0.tar.gz) = 9536fa2418200cc060edeb24fa3c778abbed7dfce626784663aa39b411477a8a
@@ -44,3 +44,5 @@ SHA256 (peterh-liner-4d47685_GH0.tar.gz) = 49dbb396f03cdb4358955066db8411bc51ead
 SIZE (peterh-liner-4d47685_GH0.tar.gz) = 18603
 SHA256 (rakyll-statik-274df12_GH0.tar.gz) = 47cb3d4bc95171baeac813c0373cdfc232c4339fb09f251a76df247615216d49
 SIZE (rakyll-statik-274df12_GH0.tar.gz) = 77898
+SHA256 (paulbellamy-ratecounter-5a11f58_GH0.tar.gz) = e493c6c8d673ecda63e9c0bd4e63a5af11362878c0c95f0e46711ccad1462eba
+SIZE (paulbellamy-ratecounter-5a11f58_GH0.tar.gz) = 2877
