@@ -52,8 +52,8 @@ GH_TAGNAME=	b34b35e:bolt 7511716:toml 1351f93:crypto \
 		f390dcf:testify 5215b55:go_spew 792786c:go_difflib 1a9d0bb:objx d37c73f:sarama 6a8e089:raidman 345426c:go_metrics 3ad0b07:aws_sdk_go \
 		6fb38e6:go_dockerclient 809154b:mysql b86b1ec:go_resiliency ded5959:queue afbd495:ini 2402d76:golang_protobuf 723cc1e:golang_snappy \
 		e842a11:go_shellquote fa3f638:go_msgpack c01cf91:go_jmespath 999f312:crc32 8ad2b29:pq 2118015:go_nsq 67994f1:client_golang 0a3005b:common \
-		b965b61:perks d0c3fe8:golang_protobuf_extensions 028eae7:go_snappystream fa8ad6f:client_model 406e5b7:procfs 8850f58:gopsutil b4f3cea:amqp \
-		1a8639a:kafka ff457ca:gorethink 0f76871:kazoo_go f7f79f7:logrus 4dc7767:backoff 50839ee:go_hostpool 218e9c8:go_zookeeper dfe1a76:mgo \
+		b965b61:perks d0c3fe8:golang_protobuf_extensions 028eae7:go_snappystream fa8ad6f:client_model 406e5b7:procfs 61dd483:gopsutil b4f3cea:amqp \
+		1a8639a:kafka ff457ca:gorethink 0f76871:kazoo_go f7f79f7:logrus 4dc7767:backoff 50839ee:go_hostpool 218e9c8:go_zookeeper 03c9f3e:mgo \
 		f7716cb:yaml e02a4a4:mqtt ca53cad:uuid f9b8669:goxnet
 
 SUB_FILES=	telegraf
@@ -115,7 +115,7 @@ post-patch:
 		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
 .endfor
 #Mongdb input doos not compile - kill it
-	@${RM} -rf  ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/plugins/inputs/mongodb
+#	@${RM} -rf  ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/plugins/inputs/mongodb
 	@${CP} -r ${WRKSRC_gorethink} ${WRKSRC}/src/github.com/dancannon/gorethink
 	@${CP} -r ${WRKSRC_mgo} ${WRKSRC}/src/gopkg.in/mgo.v2-unstable
 	@${CP} -r ${WRKSRC_mqtt}/packets ${WRKSRC}/src/gopkg.in/mqtt.v0/packets

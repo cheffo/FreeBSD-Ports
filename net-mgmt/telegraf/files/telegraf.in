@@ -34,7 +34,7 @@ start_precmd="telegraf_precmd"
 
 telegraf_precmd()
 {
-    install -o ${telegraf_user} /dev/null ${telegraf_pidfile}
+    install -d ${telegraf_pidfile}
 }
 
 load_rc_config $name
