@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	telegraf
-PORTVERSION=	0.10.0
+PORTVERSION=	0.10.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
@@ -17,7 +17,7 @@ ONLY_FOR_ARCHS=	i386 amd64
 USE_RC_SUBR=	telegraf
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	influxdb:DEFAULT \
+GH_ACCOUNT=	influxdata:DEFAULT \
 		naoina:toml \
 		naoina:go_stringutil \
 		boltdb:bolt \
@@ -25,36 +25,39 @@ GH_ACCOUNT=	influxdb:DEFAULT \
 		fatih:pool \
 		gogo:gogo_protobuf \
 		hashicorp:raft,raft_boltdb,go_msgpack \
-		influxdb:influxdb \
+		influxdata:influxdb,config \
 		stretchr:objx,testify davecgh:go_spew pmezard:go_difflib Shopify:sarama amir:raidman armon:go_metrics aws:aws_sdk_go fsouza:go_dockerclient \
-		go-sql-driver:mysql eapache:go_resiliency,queue go-ini:ini golang:golang_protobuf,golang_snappy gonuts:go_shellquote \
+		go-sql-driver:mysql eapache:go_resiliency,queue go-ini:ini golang:golang_protobuf,golang_snappy,text gonuts:go_shellquote \
 		jmespath:go_jmespath klauspost:crc32 lib:pq nsqio:go_nsq prometheus:client_golang,common,client_model,procfs beorn7:perks \
 		matttproud:golang_protobuf_extensions \
 		mreiferson:go_snappystream shirou:gopsutil streadway:amqp wvanbergen:kafka,kazoo_go dancannon:gorethink fatih:pool Sirupsen:logrus \
-		cenkalti:backoff hailocab:go_hostpool samuel:go_zookeeper go-mgo:mgo go-yaml:yaml go-mqtt:mqtt,uuid cesanta:goxnet
+		cenkalti:backoff hailocab:go_hostpool samuel:go_zookeeper go-mgo:mgo go-yaml:yaml go-mqtt:mqtt,uuid cesanta:goxnet gorilla:mux,context \
+		soniah:gosnmp \
+		zensqlmonitor:go_mssqldb
 GH_PROJECT=	bolt:bolt crypto:crypto \
-		pool:pool \
+		pool:pool go-mssqldb:go_mssqldb \
 		protobuf:gogo_protobuf \
 		raft-boltdb:raft_boltdb raft:raft \
-		toml:toml \
+		toml:toml gosnmp:gosnmp \
 		influxdb:influxdb go-stringutil:go_stringutil \
 		testify:testify go-spew:go_spew go-difflib:go_difflib objx:objx sarama:sarama raidman:raidman go-metrics:go_metrics aws-sdk-go:aws_sdk_go \
 		go-dockerclient:go_dockerclient mysql:mysql go-resiliency:go_resiliency queue:queue ini:ini protobuf:golang_protobuf snappy:golang_snappy \
 		go-shellquote:go_shellquote go-msgpack:go_msgpack go-jmespath:go_jmespath crc32:crc32 pq:pq go-nsq:go_nsq client_golang:client_golang \
 		common:common perks:perks golang_protobuf_extensions:golang_protobuf_extensions go-snappystream:go_snappystream client_model:client_model \
 		procfs:procfs gopsutil:gopsutil amqp:amqp kafka:kafka gorethink:gorethink pool:pool kazoo-go:kazoo_go logrus:logrus backoff:backoff \
-		go-hostpool:go_hostpool go-zookeeper:go_zookeeper mgo:mgo yaml:yaml mqtt:mqtt uuid:uuid goxnet:goxnet
+		go-hostpool:go_hostpool go-zookeeper:go_zookeeper mgo:mgo yaml:yaml mqtt:mqtt uuid:uuid goxnet:goxnet config:config mux:mux \
+		context:context text:text
 GH_TAGNAME=	b34b35e:bolt 7511716:toml 1351f93:crypto \
-		e492fd3:gogo_protobuf \
-		cba550e:pool d1e82c1:raft_boltdb \
-		d136cd1:raft \
-		6d3a860:influxdb 6b638e9:go_stringutil \
+		e492fd3:gogo_protobuf b1b4f88:gosnmp \
+		cba550e:pool d1e82c1:raft_boltdb ffe5510:go_mssqldb \
+		d136cd1:raft bae7cb9:config 26a6070:mux \
+		60df13f:influxdb 6b638e9:go_stringutil \
 		f390dcf:testify 5215b55:go_spew 792786c:go_difflib 1a9d0bb:objx d37c73f:sarama 6a8e089:raidman 345426c:go_metrics 3ad0b07:aws_sdk_go \
 		6fb38e6:go_dockerclient 809154b:mysql b86b1ec:go_resiliency ded5959:queue afbd495:ini 2402d76:golang_protobuf 723cc1e:golang_snappy \
 		e842a11:go_shellquote fa3f638:go_msgpack c01cf91:go_jmespath 999f312:crc32 8ad2b29:pq 2118015:go_nsq 67994f1:client_golang 0a3005b:common \
-		b965b61:perks d0c3fe8:golang_protobuf_extensions 028eae7:go_snappystream fa8ad6f:client_model 406e5b7:procfs 61dd483:gopsutil b4f3cea:amqp \
+		b965b61:perks d0c3fe8:golang_protobuf_extensions 028eae7:go_snappystream fa8ad6f:client_model 406e5b7:procfs 9d8191d:gopsutil b4f3cea:amqp \
 		1a8639a:kafka ff457ca:gorethink 0f76871:kazoo_go f7f79f7:logrus 4dc7767:backoff 50839ee:go_hostpool 218e9c8:go_zookeeper 03c9f3e:mgo \
-		f7716cb:yaml e02a4a4:mqtt ca53cad:uuid f9b8669:goxnet
+		f7716cb:yaml e02a4a4:mqtt ca53cad:uuid f9b8669:goxnet 1c83b3e:context c67034b:text
 
 SUB_FILES=	telegraf
 SUB_LIST+=	TELEGRAF_PIDDIR=${TELEGRAF_PIDDIR}
@@ -74,6 +77,7 @@ post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/gogo
 	@${MKDIR} ${WRKSRC}/src/github.com/hashicorp
 	@${MKDIR} ${WRKSRC}/src/github.com/jwilder
+	@${MKDIR} ${WRKSRC}/src/github.com/influxdata
 	@${MKDIR} ${WRKSRC}/src/github.com/influxdb
 	@${MKDIR} ${WRKSRC}/src/github.com/stretchr
 	@${MKDIR} ${WRKSRC}/src/github.com/davecgh
@@ -83,6 +87,7 @@ post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/aws
 	@${MKDIR} ${WRKSRC}/src/github.com/fsouza
 	@${MKDIR} ${WRKSRC}/src/github.com/go-sql-driver
+	@${MKDIR} ${WRKSRC}/src/github.com/gorilla
 	@${MKDIR} ${WRKSRC}/src/github.com/eapache
 	@${MKDIR} ${WRKSRC}/src/github.com/go-ini
 	@${MKDIR} ${WRKSRC}/src/github.com/golang
@@ -103,6 +108,8 @@ post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/dancannon
 	@${MKDIR} ${WRKSRC}/src/github.com/hailocab
 	@${MKDIR} ${WRKSRC}/src/github.com/samuel
+	@${MKDIR} ${WRKSRC}/src/github.com/soniah
+	@${MKDIR} ${WRKSRC}/src/github.com/zensqlmonitor
 	@${MKDIR} ${WRKSRC}/src/gopkg.in/dancannon
 	@${MKDIR} ${WRKSRC}/src/gopkg.in/fatih
 	@${MKDIR} ${WRKSRC}/src/gopkg.in/mqtt.v0
@@ -115,12 +122,17 @@ post-patch:
 		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
 .endfor
 #Mongdb input doos not compile - kill it
-#	@${RM} -rf  ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/plugins/inputs/mongodb
 	@${CP} -r ${WRKSRC_gorethink} ${WRKSRC}/src/github.com/dancannon/gorethink
 	@${CP} -r ${WRKSRC_mgo} ${WRKSRC}/src/gopkg.in/mgo.v2-unstable
 	@${CP} -r ${WRKSRC_mqtt}/packets ${WRKSRC}/src/gopkg.in/mqtt.v0/packets
+	@${CP} -r ${WRKSRC_influxdb} ${WRKSRC}/src/github.com/influxdb/influxdb
+	@${MV} ${WRKSRC_mux} ${WRKSRC}/src/github.com/gorilla/mux
+	@${MV} ${WRKSRC_context} ${WRKSRC}/src/github.com/gorilla/context
+	@${MV} ${WRKSRC_go_mssqldb} ${WRKSRC}/src/github.com/zensqlmonitor/go-mssqldb
+	@${MV} ${WRKSRC_gosnmp} ${WRKSRC}/src/github.com/soniah/gosnmp
 	@${MV} ${WRKSRC_bolt} ${WRKSRC}/src/github.com/boltdb/bolt
 	@${MV} ${WRKSRC_goxnet} ${WRKSRC}/src/golang.org/x/net
+	@${MV} ${WRKSRC_text} ${WRKSRC}/src/golang.org/x/text
 	@${MV} ${WRKSRC_mqtt} ${WRKSRC}/src/github.com/go-mqtt/mqtt
 	@${MV} ${WRKSRC_uuid} ${WRKSRC}/src/github.com/go-mqtt/uuid
 	@${MV} ${WRKSRC_crypto} ${WRKSRC}/src/golang.org/x/crypto
@@ -128,7 +140,8 @@ post-patch:
 	@${MV} ${WRKSRC_backoff} ${WRKSRC}/src/github.com/cenkalti/backoff
 	@${MV} ${WRKSRC_go_hostpool} ${WRKSRC}/src/github.com/hailocab/go-hostpool
 	@${MV} ${WRKSRC_go_zookeeper} ${WRKSRC}/src/github.com/samuel/go-zookeeper
-	@${MV} ${WRKSRC_influxdb} ${WRKSRC}/src/github.com/influxdb/influxdb
+	@${MV} ${WRKSRC_config} ${WRKSRC}/src/github.com/influxdata/config
+	@${MV} ${WRKSRC_influxdb} ${WRKSRC}/src/github.com/influxdata/influxdb
 	@${MV} ${WRKSRC_raft_boltdb} ${WRKSRC}/src/github.com/hashicorp/raft-boltdb
 	@${MV} ${WRKSRC_raft} ${WRKSRC}/src/github.com/hashicorp/raft
 	@${MV} ${WRKSRC_toml} ${WRKSRC}/src/github.com/naoina/toml
@@ -172,7 +185,7 @@ post-patch:
 	@${MV} ${WRKSRC_logrus} ${WRKSRC}/src/github.com/Sirupsen/logrus
 
 do-build:
-		@cd ${WRKSRC}/src/github.com/influxdb/${PORTNAME} &&  ${SETENV} GOPATH=${WRKSRC} go install ./...
+		@cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME} &&  ${SETENV} GOPATH=${WRKSRC} go install ./...
 
 do-install:
 		${MKDIR} ${STAGEDIR}${TELEGRAF_PIDDIR}
