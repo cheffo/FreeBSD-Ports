@@ -21,43 +21,162 @@ GH_ACCOUNT=	influxdata:DEFAULT \
 		naoina:toml \
 		naoina:go_stringutil \
 		boltdb:bolt \
-		cheffo:crypto \
 		fatih:pool \
 		gogo:gogo_protobuf \
 		hashicorp:raft,raft_boltdb,go_msgpack \
 		influxdata:influxdb,config \
-		stretchr:objx,testify davecgh:go_spew pmezard:go_difflib Shopify:sarama amir:raidman armon:go_metrics aws:aws_sdk_go fsouza:go_dockerclient \
-		go-sql-driver:mysql eapache:go_resiliency,queue go-ini:ini golang:golang_protobuf,golang_snappy,text gonuts:go_shellquote \
-		jmespath:go_jmespath klauspost:crc32 lib:pq nsqio:go_nsq prometheus:client_golang,common,client_model,procfs beorn7:perks \
+		stretchr:objx,testify \
+		davecgh:go_spew \
+		pmezard:go_difflib \
+		Shopify:sarama \
+		amir:raidman \
+		armon:go_metrics \
+		aws:aws_sdk_go \
+		fsouza:go_dockerclient \
+		go-sql-driver:mysql \
+		eapache:go_resiliency,queue \
+		go-ini:ini \
+		golang:crypto,golang_protobuf,snappy,text \
+		gonuts:go_shellquote \
+		jmespath:go_jmespath \
+		klauspost:crc32 \
+		lib:pq \
+		nsqio:go_nsq \
+		prometheus:client_golang,common,client_model,procfs \
+		beorn7:perks \
 		matttproud:golang_protobuf_extensions \
-		mreiferson:go_snappystream shirou:gopsutil streadway:amqp wvanbergen:kafka,kazoo_go dancannon:gorethink fatih:pool Sirupsen:logrus \
-		cenkalti:backoff hailocab:go_hostpool samuel:go_zookeeper go-mgo:mgo go-yaml:yaml go-mqtt:mqtt,uuid cesanta:goxnet gorilla:mux,context \
+		mreiferson:go_snappystream \
+		shirou:gopsutil \
+		streadway:amqp \
+		wvanbergen:kafka,kazoo_go \
+		dancannon:gorethink \
+		fatih:pool \
+		Sirupsen:logrus \
+		cenkalti:backoff \
+		hailocab:go_hostpool \
+		samuel:go_zookeeper \
+		go-mgo:mgo \
+		go-yaml:yaml \
+		go-mqtt:mqtt,uuid \
+		cesanta:goxnet \
+		gorilla:mux,context \
 		soniah:gosnmp \
 		zensqlmonitor:go_mssqldb
-GH_PROJECT=	bolt:bolt crypto:crypto \
-		pool:pool go-mssqldb:go_mssqldb \
+GH_PROJECT=	bolt:bolt \
+		crypto:crypto \
+		pool:pool \
+		go-mssqldb:go_mssqldb \
 		protobuf:gogo_protobuf \
-		raft-boltdb:raft_boltdb raft:raft \
-		toml:toml gosnmp:gosnmp \
-		influxdb:influxdb go-stringutil:go_stringutil \
-		testify:testify go-spew:go_spew go-difflib:go_difflib objx:objx sarama:sarama raidman:raidman go-metrics:go_metrics aws-sdk-go:aws_sdk_go \
-		go-dockerclient:go_dockerclient mysql:mysql go-resiliency:go_resiliency queue:queue ini:ini protobuf:golang_protobuf snappy:golang_snappy \
-		go-shellquote:go_shellquote go-msgpack:go_msgpack go-jmespath:go_jmespath crc32:crc32 pq:pq go-nsq:go_nsq client_golang:client_golang \
-		common:common perks:perks golang_protobuf_extensions:golang_protobuf_extensions go-snappystream:go_snappystream client_model:client_model \
-		procfs:procfs gopsutil:gopsutil amqp:amqp kafka:kafka gorethink:gorethink pool:pool kazoo-go:kazoo_go logrus:logrus backoff:backoff \
-		go-hostpool:go_hostpool go-zookeeper:go_zookeeper mgo:mgo yaml:yaml mqtt:mqtt uuid:uuid goxnet:goxnet config:config mux:mux \
-		context:context text:text
-GH_TAGNAME=	b34b35e:bolt 7511716:toml 1351f93:crypto \
-		e492fd3:gogo_protobuf b1b4f88:gosnmp \
-		cba550e:pool d1e82c1:raft_boltdb ffe5510:go_mssqldb \
-		d136cd1:raft bae7cb9:config 26a6070:mux \
-		60df13f:influxdb 6b638e9:go_stringutil \
-		f390dcf:testify 5215b55:go_spew 792786c:go_difflib 1a9d0bb:objx d37c73f:sarama 6a8e089:raidman 345426c:go_metrics 3ad0b07:aws_sdk_go \
-		6fb38e6:go_dockerclient 809154b:mysql b86b1ec:go_resiliency ded5959:queue afbd495:ini 2402d76:golang_protobuf 723cc1e:golang_snappy \
-		e842a11:go_shellquote fa3f638:go_msgpack c01cf91:go_jmespath 999f312:crc32 8ad2b29:pq 2118015:go_nsq 67994f1:client_golang 0a3005b:common \
-		b965b61:perks d0c3fe8:golang_protobuf_extensions 028eae7:go_snappystream fa8ad6f:client_model 406e5b7:procfs 9d8191d:gopsutil b4f3cea:amqp \
-		1a8639a:kafka ff457ca:gorethink 0f76871:kazoo_go f7f79f7:logrus 4dc7767:backoff 50839ee:go_hostpool 218e9c8:go_zookeeper 03c9f3e:mgo \
-		f7716cb:yaml e02a4a4:mqtt ca53cad:uuid f9b8669:goxnet 1c83b3e:context c67034b:text
+		raft-boltdb:raft_boltdb \
+		raft:raft \
+		toml:toml \
+		gosnmp:gosnmp \
+		influxdb:influxdb \
+		go-stringutil:go_stringutil \
+		testify:testify \
+		go-spew:go_spew \
+		go-difflib:go_difflib \
+		objx:objx \
+		sarama:sarama \
+		raidman:raidman \
+		go-metrics:go_metrics \
+		aws-sdk-go:aws_sdk_go \
+		go-dockerclient:go_dockerclient \
+		mysql:mysql \
+		go-resiliency:go_resiliency \
+		queue:queue \
+		ini:ini \
+		protobuf:golang_protobuf \
+		snappy:snappy \
+		go-shellquote:go_shellquote \
+		go-msgpack:go_msgpack \
+		go-jmespath:go_jmespath \
+		crc32:crc32 \
+		pq:pq \
+		go-nsq:go_nsq \
+		client_golang:client_golang \
+		common:common \
+		perks:perks \
+		golang_protobuf_extensions:golang_protobuf_extensions \
+		go-snappystream:go_snappystream \
+		client_model:client_model \
+		procfs:procfs \
+		gopsutil:gopsutil \
+		amqp:amqp \
+		kafka:kafka \
+		gorethink:gorethink \
+		pool:pool \
+		kazoo-go:kazoo_go \
+		logrus:logrus \
+		backoff:backoff \
+		go-hostpool:go_hostpool \
+		go-zookeeper:go_zookeeper \
+		mgo:mgo \
+		yaml:yaml \
+		mqtt:mqtt \
+		uuid:uuid \
+		goxnet:goxnet \
+		config:config \
+		mux:mux \
+		context:context \
+		text:text
+GH_TAGNAME=	1f22c01:crypto \
+		82d16f7:gogo_protobuf \
+		cba550e:pool \
+		45bba20:golang_protobuf \
+		03c9f3e:mgo \
+		f7716cb:yaml \
+		e02a4a4:mqtt \
+		f9b8669:goxnet \
+		c67034b:text \
+		b4f3cea:amqp \
+		bc2c571:aws_sdk_go \
+		4dc7767:backoff \
+		ee4a088:bolt \
+		67994f1:client_golang \
+		fa8ad6f:client_model \
+		dba5e39:common \
+		dbabd86:config \
+		1c83b3e:context \
+		999f312:crc32 \
+		792786c:go_difflib \
+		02a8beb:go_dockerclient \
+		e80d13c:go_hostpool \
+		fba8638:go_jmespath \
+		345426c:go_metrics \
+		fa3f638:go_msgpack \
+		ffe5510:go_mssqldb \
+		2118015:go_nsq \
+		b86b1ec:go_resiliency \
+		e842a11:go_shellquote \
+		028eae7:go_snappystream \
+		5215b55:go_spew \
+		6b638e9:go_stringutil \
+		218e9c8:go_zookeeper \
+		d0c3fe8:golang_protobuf_extensions \
+		41f9994:gopsutil \
+		7d1af5b:gorethink \
+		b1b4f88:gosnmp \
+		fd85ae5:influxdb \
+		afbd495:ini \
+		1a8639a:kafka \
+		0f76871:kazoo_go \
+		433488c:logrus \
+		26a6070:mux \
+		b4db83c:mysql \
+		1a9d0bb:objx \
+		b965b61:perks \
+		8ad2b29:pq \
+		406e5b7:procfs \
+		ded5959:queue \
+		057b893:raft \
+		d1e82c1:raft_boltdb \
+		53c1b96:raidman \
+		4ba9bba:sarama \
+		9f9027f:testify \
+		1963d05:snappy \
+		7511716:toml \
+		dee7705:uuid
 
 SUB_FILES=	telegraf
 SUB_LIST+=	TELEGRAF_PIDDIR=${TELEGRAF_PIDDIR}
@@ -160,7 +279,7 @@ post-patch:
 	@${MV} ${WRKSRC_queue} ${WRKSRC}/src/github.com/eapache/queue
 	@${MV} ${WRKSRC_ini} ${WRKSRC}/src/github.com/go-ini/ini
 	@${MV} ${WRKSRC_golang_protobuf} ${WRKSRC}/src/github.com/golang/protobuf
-	@${MV} ${WRKSRC_golang_snappy} ${WRKSRC}/src/github.com/golang/snappy
+	@${MV} ${WRKSRC_snappy} ${WRKSRC}/src/github.com/golang/snappy
 	@${MV} ${WRKSRC_go_shellquote} ${WRKSRC}/src/github.com/gonuts/go-shellquote
 	@${MV} ${WRKSRC_go_msgpack} ${WRKSRC}/src/github.com/hashicorp/go-msgpack
 	@${MV} ${WRKSRC_go_jmespath} ${WRKSRC}/src/github.com/jmespath/go-jmespath
