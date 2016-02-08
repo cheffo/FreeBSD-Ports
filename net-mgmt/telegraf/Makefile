@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	telegraf
-PORTVERSION=	0.10.1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	0.10.2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	cheffo@freebsd-bg.org
@@ -130,19 +129,19 @@ GH_TAGNAME=	1f22c01:crypto \
 		f9b8669:goxnet \
 		c67034b:text \
 		b4f3cea:amqp \
-		bc2c571:aws_sdk_go \
+		371c1c6:aws_sdk_go \
 		4dc7767:backoff \
-		ee4a088:bolt \
-		67994f1:client_golang \
+		2f846c3:bolt \
+		15006a7:client_golang \
 		fa8ad6f:client_model \
 		dba5e39:common \
 		dbabd86:config \
 		1c83b3e:context \
-		999f312:crc32 \
+		6973dcf:crc32 \
 		792786c:go_difflib \
-		02a8beb:go_dockerclient \
+		0099401:go_dockerclient \
 		e80d13c:go_hostpool \
-		fba8638:go_jmespath \
+		0b12d6b:go_jmespath \
 		345426c:go_metrics \
 		fa3f638:go_msgpack \
 		ffe5510:go_mssqldb \
@@ -154,27 +153,27 @@ GH_TAGNAME=	1f22c01:crypto \
 		6b638e9:go_stringutil \
 		218e9c8:go_zookeeper \
 		d0c3fe8:golang_protobuf_extensions \
-		41f9994:gopsutil \
+		59b63de:gopsutil \
 		7d1af5b:gorethink \
 		b1b4f88:gosnmp \
-		fd85ae5:influxdb \
-		afbd495:ini \
+		af1a22d:influxdb \
+		193d1ec:ini \
 		1a8639a:kafka \
 		0f76871:kazoo_go \
-		433488c:logrus \
+		be52937:logrus \
 		26a6070:mux \
-		b4db83c:mysql \
+		267b128:mysql \
 		1a9d0bb:objx \
 		b965b61:perks \
-		8ad2b29:pq \
+		05333d3:pq \
 		406e5b7:procfs \
 		ded5959:queue \
 		057b893:raft \
 		d1e82c1:raft_boltdb \
 		53c1b96:raidman \
 		4ba9bba:sarama \
+		894fd46:snappy \
 		9f9027f:testify \
-		1963d05:snappy \
 		7511716:toml \
 		dee7705:uuid
 
@@ -234,9 +233,10 @@ post-patch:
 	@${MKDIR} ${WRKSRC}/src/gopkg.in/mqtt.v0
 	@${MKDIR} ${WRKSRC}/src/golang.org/x
 	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
-.for src in CHANGELOG.md CONFIGURATION.md CONTRIBUTING.md Godeps LICENSE \
-	README.md accumulator.go agent.go agent_test.go build.py circle.yml \
-	cmd etc internal plugins scripts testutil
+.for src in CHANGELOG.md CONFIGURATION.md CONTRIBUTING.md Godeps Godeps_windows \
+	LICENSE LICENSE_OF_DEPENDENCIES.md Makefile README.md accumulator.go \
+	agent build.py circle.yml cmd etc input.go internal metric.go \
+	metric_test.go output.go plugins scripts testutil
 	@${MV} ${WRKSRC}/${src} \
 		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
 .endfor

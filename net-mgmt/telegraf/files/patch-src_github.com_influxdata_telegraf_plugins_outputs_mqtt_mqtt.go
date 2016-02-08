@@ -6,6 +6,6 @@
  
 -	paho "git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
 +	paho "github.com/go-mqtt/mqtt"
- 	"github.com/influxdata/influxdb/client/v2"
+ 	"github.com/influxdata/telegraf"
  	"github.com/influxdata/telegraf/internal"
  	"github.com/influxdata/telegraf/plugins/outputs"
