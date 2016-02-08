@@ -26,7 +26,8 @@ rcvar=telegraf_enable
 : ${telegraf_options:="${telegraf_flags} -config=${telegraf_conf} 2> /var/log/telegraf.log"}
 
 # daemon
-telegraf_pidfile="%%TELEGRAF_PIDDIR%%${name}.pid"
+telegraf_piddir="%%TELEGRAF_PIDDIR%%"
+telegraf_pidfile="${telegraf_piddir}${name}.pid"
 procname="%%PREFIX%%/bin/${name}"
 command=/usr/sbin/daemon
 command_args=" -c -p ${telegraf_pidfile} ${procname} ${telegraf_options}"
@@ -34,7 +35,7 @@ start_precmd="telegraf_precmd"
 
 telegraf_precmd()
 {
-    install -d ${telegraf_pidfile}
+    install -d ${telegraf_piddir}
 }
 
 load_rc_config $name
