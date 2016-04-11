@@ -10,7 +10,7 @@ COMMENT=	Open-source distributed time series database
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	go>=1.5.0:lang/go
+BUILD_DEPENDS=	go>=1.5.0:${PORTSDIR}/lang/go
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -37,8 +37,7 @@ GH_TUPLE=	BurntSushi:toml:bbd5bb6:toml \
 		rakyll:statik:2940084:statik \
 		collectd:go-collectd:9fc824c:go_collectd \
  		golang:crypto:3fbbcd2:crypto \
-		fatih:pool:cba550e:pool \
-
+		fatih:pool:cba550e:pool
 
 SUB_FILES=	influxd
 SUB_LIST+=	INFLUXD_USER=${INFLUXD_USER} \
@@ -93,23 +92,23 @@ post-patch:
 		influxvar.go models monitor nightly.sh node.go package.sh pkg scripts \
 		services stress tcp test.sh tests toml tsdb uuid \
  		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
-	@${MV} ${WRKSRC_toml} ${WRKSRC}/src/github.com/BurntSushi/toml 
-	@${MV} ${WRKSRC_go_metrics} ${WRKSRC}/src/github.com/armon/go-metrics 
-	@${MV} ${WRKSRC_pat} ${WRKSRC}/src/github.com/bmizerany/pat 
-	@${MV} ${WRKSRC_bolt} ${WRKSRC}/src/github.com/boltdb/bolt 
-	@${MV} ${WRKSRC_go_bits} ${WRKSRC}/src/github.com/dgryski/go-bits 
-	@${MV} ${WRKSRC_go_bitstream} ${WRKSRC}/src/github.com/dgryski/go-bitstream 
-	@${MV} ${WRKSRC_protobuf} ${WRKSRC}/src/github.com/gogo/protobuf 
-	@${MV} ${WRKSRC_snappy} ${WRKSRC}/src/github.com/golang/snappy 
-	@${MV} ${WRKSRC_go_msgpack} ${WRKSRC}/src/github.com/hashicorp/go-msgpack 
-	@${MV} ${WRKSRC_raft} ${WRKSRC}/src/github.com/hashicorp/raft 
-	@${MV} ${WRKSRC_raft_boltdb} ${WRKSRC}/src/github.com/hashicorp/raft-boltdb 
-	@${MV} ${WRKSRC_usage_client} ${WRKSRC}/src/github.com/influxdata/usage-client 
-	@${MV} ${WRKSRC_encoding} ${WRKSRC}/src/github.com/jwilder/encoding 
-	@${MV} ${WRKSRC_gollectd} ${WRKSRC}/src/github.com/kimor79/gollectd 
-	@${MV} ${WRKSRC_ratecounter} ${WRKSRC}/src/github.com/paulbellamy/ratecounter 
-	@${MV} ${WRKSRC_liner} ${WRKSRC}/src/github.com/peterh/liner 
-	@${MV} ${WRKSRC_statik} ${WRKSRC}/src/github.com/rakyll/statik 
+	@${MV} ${WRKSRC_toml} ${WRKSRC}/src/github.com/BurntSushi/toml
+	@${MV} ${WRKSRC_go_metrics} ${WRKSRC}/src/github.com/armon/go-metrics
+	@${MV} ${WRKSRC_pat} ${WRKSRC}/src/github.com/bmizerany/pat
+	@${MV} ${WRKSRC_bolt} ${WRKSRC}/src/github.com/boltdb/bolt
+	@${MV} ${WRKSRC_go_bits} ${WRKSRC}/src/github.com/dgryski/go-bits
+	@${MV} ${WRKSRC_go_bitstream} ${WRKSRC}/src/github.com/dgryski/go-bitstream
+	@${MV} ${WRKSRC_protobuf} ${WRKSRC}/src/github.com/gogo/protobuf
+	@${MV} ${WRKSRC_snappy} ${WRKSRC}/src/github.com/golang/snappy
+	@${MV} ${WRKSRC_go_msgpack} ${WRKSRC}/src/github.com/hashicorp/go-msgpack
+	@${MV} ${WRKSRC_raft} ${WRKSRC}/src/github.com/hashicorp/raft
+	@${MV} ${WRKSRC_raft_boltdb} ${WRKSRC}/src/github.com/hashicorp/raft-boltdb
+	@${MV} ${WRKSRC_usage_client} ${WRKSRC}/src/github.com/influxdata/usage-client
+	@${MV} ${WRKSRC_encoding} ${WRKSRC}/src/github.com/jwilder/encoding
+	@${MV} ${WRKSRC_gollectd} ${WRKSRC}/src/github.com/kimor79/gollectd
+	@${MV} ${WRKSRC_ratecounter} ${WRKSRC}/src/github.com/paulbellamy/ratecounter
+	@${MV} ${WRKSRC_liner} ${WRKSRC}/src/github.com/peterh/liner
+	@${MV} ${WRKSRC_statik} ${WRKSRC}/src/github.com/rakyll/statik
 	@${MV} ${WRKSRC_go_collectd} ${WRKSRC}/src/collectd.org
 	@${MV} ${WRKSRC_crypto} ${WRKSRC}/src/golang.org/x/crypto
 	@${MV} ${WRKSRC_pool} ${WRKSRC}/src/gopkg.in/fatih/pool.v2
