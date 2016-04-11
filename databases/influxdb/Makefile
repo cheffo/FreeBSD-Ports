@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	influxdb
-PORTVERSION=	0.11.1
+PORTVERSION=	0.12.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases net-mgmt
 
@@ -21,13 +21,13 @@ GH_ACCOUNT=	influxdata:DEFAULT
 GH_TUPLE=	BurntSushi:toml:bbd5bb6:toml \
 		armon:go-metrics:f303b03:go_metrics \
 		bmizerany:pat:c068ca2:pat \
-		boltdb:bolt:831b652:bolt \
+		boltdb:bolt:144418e:bolt \
 		dgryski:go-bits:86c69b3:go_bits \
 		dgryski:go-bitstream:27cd597:go_bitstream \
-		gogo:protobuf:5b7453b:protobuf \
-		golang:snappy:5f1c01d:snappy \
+		gogo:protobuf:74b6e9d:protobuf \
+		golang:snappy:ef80b33:snappy \
 		hashicorp:go-msgpack:fa3f638:go_msgpack \
-		hashicorp:raft:57cdb81:raft \
+		hashicorp:raft:1c84b7c:raft \
 		hashicorp:raft-boltdb:d1e82c1:raft_boltdb \
 		influxdata:usage-client:475977e:usage_client \
 		jwilder:encoding:07d88d4:encoding \
@@ -36,9 +36,8 @@ GH_TUPLE=	BurntSushi:toml:bbd5bb6:toml \
 		peterh:liner:49ca659:liner \
 		rakyll:statik:2940084:statik \
 		collectd:go-collectd:9fc824c:go_collectd \
- 		golang:crypto:9e7f5dc:crypto \
-		fatih:pool:cba550e:pool \
-
+ 		golang:crypto:3fbbcd2:crypto \
+		fatih:pool:cba550e:pool
 
 SUB_FILES=	influxd
 SUB_LIST+=	INFLUXD_USER=${INFLUXD_USER} \
