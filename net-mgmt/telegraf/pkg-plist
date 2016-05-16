@@ -1,3 +1,2 @@
 bin/telegraf
-@dir %%TELEGRAF_PIDDIR%%
 @sample etc/telegraf.conf.sample
