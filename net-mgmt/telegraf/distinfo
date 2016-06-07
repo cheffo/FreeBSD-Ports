@@ -1,6 +1,6 @@
 TIMESTAMP = 1463564950
-SHA256 (influxdata-telegraf-0.13.0_GH0.tar.gz) = e48f01e5d217af445f8152e9aeb393bf1ba94b5ccec5d535eefe62b5ff1f2c32
-SIZE (influxdata-telegraf-0.13.0_GH0.tar.gz) = 459070
+SHA256 (influxdata-telegraf-0.13.1_GH0.tar.gz) = 96d67c203eb3820d3cde5bd89c87521ad7a404a495db9f250084f767c26d8990
+SIZE (influxdata-telegraf-0.13.1_GH0.tar.gz) = 486925
 SHA256 (Shopify-sarama-97511b2_GH0.tar.gz) = 09f6ee26d24e85f28063b7f853075530413b62e8451a87e66e5ba09fed44520d
 SIZE (Shopify-sarama-97511b2_GH0.tar.gz) = 110056
 SHA256 (Sirupsen-logrus-cd7d1bb_GH0.tar.gz) = 45cbe459097f2580128819f3fea33c9f8ecd55569e6eeaa8bbef4097f7b22eb1
