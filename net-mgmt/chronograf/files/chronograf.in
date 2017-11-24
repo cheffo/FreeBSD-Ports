@@ -1,0 +1,39 @@
+#!/bin/sh
+# $FreeBSD$
+
+# PROVIDE: chronograf
+# REQUIRE: DAEMON NETWORKING
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable telegrafb:
+# chronograf_enable="YES"
+#
+# chronograf_enable (bool):	Set to YES to enable telegraf
+#				Default: NO
+# chronograf_conf (str):		telegraf configuration file
+#				Default: ${PREFIX}/etc/telegraf.conf
+# chronograf_flags (str):		Extra flags passed to telegraf
+
+. /etc/rc.subr
+
+name="telegraf"
+rcvar=telegraf_enable
+load_rc_config $name
+
+: ${chronograf_enable:="NO"}
+: ${chronograf_flags:=""}
+: ${chronograf_conf:="%%PREFIX%%/etc/${name}.conf"}
+
+# daemon
+start_precmd=chronograf_prestart
+pidfile="/var/run/${name}.pid"
+command=/usr/sbin/daemon
+command_args="-crP ${pidfile} %%PREFIX%%/bin/${name} ${chronograf_flags} -config=${chronograf_conf} >> /var/log/chronograf.log 2>&1"
+
+chronograf_prestart() {
+# Have to empty rc_flags so they don't get passed to daemon(8)
+        rc_flags=""
+}
+
+run_rc_command "$1"

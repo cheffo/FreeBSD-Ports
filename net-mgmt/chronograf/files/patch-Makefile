@@ -1,0 +1,20 @@
+--- Makefile.orig	2017-11-24 01:13:34 UTC
++++ Makefile
+@@ -71,8 +71,6 @@ dep: .jsdep .godep
+ 
+ .godep:
+ ifndef GOBINDATA
+-	@echo "Installing go-bindata"
+-	go get -u github.com/jteeuwen/go-bindata/...
+ endif
+ 	@touch .godep
+ 
+@@ -80,7 +78,7 @@ endif
+ ifndef YARN
+ 	$(error Please install yarn 0.19.1+)
+ else
+-	cd ui && yarn --no-progress --no-emoji
++	cd ui && yarn --no-progress --no-emoji --offline
+ 	@touch .jsdep
+ endif
+ 
