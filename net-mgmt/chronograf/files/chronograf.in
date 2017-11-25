@@ -17,19 +17,18 @@
 
 . /etc/rc.subr
 
-name="telegraf"
-rcvar=telegraf_enable
+name="chronograf"
+rcvar=chronograf_enable
 load_rc_config $name
 
 : ${chronograf_enable:="NO"}
-: ${chronograf_flags:=""}
-: ${chronograf_conf:="%%PREFIX%%/etc/${name}.conf"}
+: ${chronograf_flags:="-b /var/db/chronograf-v1.db"}
 
 # daemon
 start_precmd=chronograf_prestart
 pidfile="/var/run/${name}.pid"
 command=/usr/sbin/daemon
-command_args="-crP ${pidfile} %%PREFIX%%/bin/${name} ${chronograf_flags} -config=${chronograf_conf} >> /var/log/chronograf.log 2>&1"
+command_args="-crP ${pidfile} %%PREFIX%%/bin/${name} ${chronograf_flags} >> /var/log/chronograf.log 2>&1"
 
 chronograf_prestart() {
 # Have to empty rc_flags so they don't get passed to daemon(8)
