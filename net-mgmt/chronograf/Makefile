@@ -4,14 +4,14 @@
 PORTNAME=	chronograf
 DISTVERSION=	1.3.10.0
 CATEGORIES=	net-mgmt
+MASTER_SITES=   https://codeload.github.com/influxdata/dygraphs/tar.gz/:9cc9
+
+DISTFILES=      9cc90443f58c11b45473516a97d4bb3a68a620c2:9cc9
 
 MAINTAINER=	cheffo@FreeBSD.org
 COMMENT=	Time-series data collection
 
 LICENSE=	MIT
-
-MASTER_SITES=   https://registry.yarnpkg.com/classnames/-/:classnames
-DISTFILES=      classnames-2.2.5.tgz:classnames
 
 ONLY_FOR_ARCHS= amd64
 
@@ -20,7 +20,7 @@ BUILD_DEPENDS=	go>=1.8.0:lang/go \
 		phantomjs:lang/phantomjs \
 		go-bindata:devel/go-bindata
 
-USES=		gmake
+USES=		gmake python:build
 
 USE_RC_SUBR=	chronograf
 
@@ -29,8 +29,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	influxdata:DEFAULT
 
 SUB_FILES=	chronograf
-SUB_LIST+=	TELEGRAF_PIDDIR=${TELEGRAF_PIDDIR}
-PLIST_SUB=	TELEGRAF_PIDDIR=${TELEGRAF_PIDDIR}
+SUB_LIST+=	CHRONOGRAF_PIDDIR=${CHRONOGRAF_PIDDIR}
+PLIST_SUB=	CHRONOGRAF_PIDDIR=${CHRONOGRAF_PIDDIR}
 
 post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
@@ -43,8 +43,11 @@ post-patch:
 		${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
 
 do-build:
-	@cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME} && \
-		${SETENV} GOPATH=${WRKSRC} ${GMAKE} all
+	cd ${WRKDIR} && ${SETENV} HOME=${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui yarn config set cache-folder ${WRKDIR}/.yarn_cache --offline
+	cd ${WRKDIR} && ${SETENV} HOME=${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui yarn config set yarn-offline-mirror ${PORTSDIR}/distfiles/ --offline
+	cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui && ${SETENV} PYTHON=${PYTHON_CMD} HOME=${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui yarn --no-progress --no-emoji
+	cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME} && \
+		${SETENV} GOPATH=${WRKSRC} ${GMAKE} build
 		${SETENV} GOPATH=${WRKSRC} go install -ldflags "-X main.version=${DISTVERSION}" ./...
 
 do-install:
