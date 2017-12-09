@@ -48,10 +48,10 @@ KAPACITORD_LOGDIR=	/var/log/${PORTNAME}/
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == "FreeBSD" && ((${OSVERSION} >= 1100513 && ${OSVERSION} < 1200000) || \
-        ${OSVERSION} >= 1200015)
-SUB_LIST+=      KAPACITORD_LOGCMD="daemon"
+	${OSVERSION} >= 1200015)
+SUB_LIST+=	KAPACITORD_LOGCMD="daemon"
 .else
-SUB_LIST+=      KAPACITORD_LOGCMD="logger"
+SUB_LIST+=	KAPACITORD_LOGCMD="logger"
 .endif
 
 post-patch:
