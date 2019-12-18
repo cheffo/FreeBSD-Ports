@@ -1,0 +1,8 @@
+bin/chronoctl
+bin/chronograf
+bin/influx
+bin/influxd
+bin/telemetryd
+@dir /var/db/influxdb
+@dir /var/log/influxdb
+@dir /var/run/influxdb

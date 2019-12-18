@@ -1,0 +1,122 @@
+.PHONY: assets dep clean test gotest gotestrace jstest run run-dev ctags
+
+VERSION = 1.7.15
+COMMIT ?= $(shell git rev-parse --short=8 HEAD)
+GOBINDATA := $(shell go list -f {{.Root}}  github.com/kevinburke/go-bindata 2> /dev/null)
+YARN := $(shell command -v yarn 2> /dev/null)
+
+SOURCES := $(shell find . -name '*.go' ! -name '*_gen.go' -not -path "./vendor/*" )
+UISOURCES := $(shell find ui -type f -not \( -path ui/build/\* -o -path ui/node_modules/\* -prune \) )
+
+LDFLAGS=-ldflags "-s -X main.version=${VERSION}"
+BINARY=chronograf
+CTLBINARY=chronoctl
+GO111MODULE=on
+
+.DEFAULT_GOAL := all
+
+all: dep build
+
+build: assets ${BINARY}
+
+${BINARY}: $(SOURCES) .bindata .jsdep .godep
+	GO111MODULE=off go build -o ${BINARY} ${LDFLAGS} ./cmd/chronograf/main.go
+	rm -rf src && ln -s vendor/ src && ln -s ../chronograf-1.7.15 src/github.com/influxdata/chronograf && \
+	GO111MODULE=off go build -o ${CTLBINARY} ${LDFLAGS} ./cmd/chronoctl
+
+define CHRONOGIRAFFE
+             ._ o o
+             \_`-)|_
+          ,""      _\_
+        ,"  ## |   0 0.
+      ," ##   ,-\__    `.
+    ,"       /     `--._;) - "HAI, I'm Chronogiraffe. Let's be friends!"
+  ,"     ## /
+,"   ##    /
+endef
+export CHRONOGIRAFFE
+chronogiraffe: ${BINARY}
+	@echo "$$CHRONOGIRAFFE"
+
+docker-${BINARY}: $(SOURCES)
+	CGO_ENABLED=0 GOOS=linux GO111MODULE=on go build -installsuffix cgo -o ${BINARY} ${LDFLAGS} \
+		./cmd/chronograf/main.go
+
+docker: dep assets docker-${BINARY}
+	docker build -t chronograf .
+
+assets: .jssrc .bindata
+
+.bindata: server/swagger_gen.go canned/bin_gen.go protoboards/bin_gen.go dist/dist_gen.go
+	@touch .bindata
+
+dist/dist_gen.go: $(UISOURCES)
+	mv go.mod go.mod.bak && go generate -x ./dist && mv go.mod.bak go.mod
+
+server/swagger_gen.go: server/swagger.json
+	mv go.mod go.mod.bak && go generate -x ./server && mv go.mod.bak go.mod
+
+canned/bin_gen.go: canned/*.json
+	mv go.mod go.mod.bak && go generate -x ./canned && mv go.mod.bak go.mod
+	
+protoboards/bin_gen.go: protoboards/*.json
+	mv go.mod go.mod.bak && go generate -x ./protoboards && mv go.mod.bak go.mod
+
+.jssrc: $(UISOURCES)
+	cd ui && yarn run clean && yarn run build
+	@touch .jssrc
+
+dep: .jsdep .godep
+
+.godep:
+ifndef GOBINDATA
+	@echo "Installing go-bindata"
+endif
+	@touch .godep
+
+.jsdep: ui/yarn.lock
+ifndef YARN
+	$(error Please install yarn 0.19.1+)
+else
+	cd ui && yarn --no-progress --no-emoji
+	@touch .jsdep
+endif
+
+gen: internal.pb.go
+
+internal.pb.go: bolt/internal/internal.proto
+	GO111MODULE=on go generate -x ./bolt/internal
+
+test: jstest gotest gotestrace lint-ci
+
+gotest:
+	GO111MODULE=on go test -timeout 10s ./...
+
+gotestrace:
+	GO111MODULE=on go test -race ./...
+
+jstest:
+	cd ui && yarn test --runInBand
+
+lint:
+	cd ui && yarn run lint
+
+lint-ci:
+	cd ui && yarn run eslint && yarn run tslint && yarn run tsc # fail fast for ci process
+
+run: ${BINARY}
+	./chronograf
+
+run-dev: chronogiraffe
+	mkdir -p ui/build
+	./chronograf -d --log-level=debug
+
+clean:
+	if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
+	cd ui && yarn run clean
+	cd ui && rm -rf node_modules
+	rm -f dist/dist_gen.go canned/bin_gen.go protoboards/bin_gen.go server/swagger_gen.go
+	@rm -f .godep .jsdep .jssrc .bindata
+
+ctags:
+	ctags -R --languages="Go" --exclude=.git --exclude=ui .

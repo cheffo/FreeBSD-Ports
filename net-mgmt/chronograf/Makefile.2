@@ -1,0 +1,101 @@
+# Created by: Stefan Lambrev <cheffo@freebsd-bg.org>
+# $FreeBSD$
+
+PORTNAME=	chronograf
+DISTVERSION=	1.7.15
+CATEGORIES=	net-mgmt
+
+MAINTAINER=	cheffo@FreeBSD.org
+COMMENT=	Time-series data collection
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
+
+USES=		go
+
+USE_RC_SUBR=	chronograf
+
+USE_GITHUB=	yes
+
+GH_ACCOUNT=	influxdata
+GH_SUBDIR=	src/github.com/${GH_ACCOUNT_DEFAULT}/${GH_PROJECT_DEFAULT}
+
+GH_TUPLE=	NYTimes:gziphandler:6710af5:NYTimes_gziphandler/vendor/github.com/NYTimes/gziphandler \
+		aws:aws-sdk-go:v1.25.16:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
+		kevinburke:go-bindata:06af60a:kevinburke_go_bindata/vendor/github.com/kevinburke/go-bindata \
+		gogo:protobuf:v1.1.1:gogo_protobuf/vendor/github.com/gogo/protobuf \
+		Sirupsen:logrus:3ec0642:Sirupsen_logrus/vendor/github.com/Sirupsen/logrus \
+		boltdb:bolt:v1.3.1:boltdb_bolt/vendor/github.com/boltdb/bolt \
+		bouk:httprouter:ee8b381:bouk_httprouter/vendor/github.com/bouk/httprouter \
+		dgrijalva:jwt-go:v3.2.0:dgrijalva_jwt_go/vendor/github.com/dgrijalva/jwt-go \
+		elazarl:go-bindata-assetfs:9a6736e:elazarl_go_bindata_assetfs/vendor/github.com/elazarl/go-bindata-assetfs \
+		google:go-github:dd29b54:google_go_github/vendor/github.com/google/go-github \
+		influxdata:usage-client:6d38953:influxdata_usage_client/vendor/github.com/influxdata/usage-client \
+		jessevdk:go-flags:v1.4.0:jessevdk_go_flags/vendor/github.com/jessevdk/go-flags \
+		satori:go.uuid:v1.2.0:satori_go_uuid/vendor/github.com/satori/go.uuid \
+		sergi:go-diff:v1.0.0:sergi_go_diff/vendor/github.com/sergi/go-diff \
+		tylerb:graceful:v1.2.15:tylerb_graceful/vendor/github.com/tylerb/graceful \
+		golang:net:a680a1e:golang_net/vendor/golang.org/x/net \
+		golang:oauth2:c57b0fa:golang_oauth2/vendor/golang.org/x/oauth2 \
+		googleapis:google-api-go-client:v0.5.0:googleapis_google_api_go_client/vendor/google.golang.org/api \
+		influxdata:influxdb:v1.7.9:influxdata_influxdb/vendor/github.com/influxdata/influxdb \
+		influxdata:kapacitor:v1.5.3:influxdata/kapacitor/vendor/github.com/influxdata/kapacitor \
+		microcosm-cc:bluemonday:v1.0.1:microcosm_cc_bluemonday/vendor/github.com/microcosm-cc/bluemonday \
+		influxdata:flux:v0.50.2:influxdata_flux/vendor/github.com/influxdata/flux \
+		dustin:go-humanize:bb3d318:dustin_go_humanize/vendor/github.com/dustin/go-humanize \
+		google:go-cmp:v0.2.0:google_go_cmp/vendor/github.com/google/go-cmp \
+		goreleaser:goreleaser:v0.97.0:goreleaser_goreleaser/vendor/github.com/goreleaser/goreleaser \
+		lestrrat-go:jwx:v0.9.0:lestrrat_go_jwx/vendor/github.com/lestrrat-go/jwx \
+		mattn:go-zglob:v0.0.1:mattn_go_zglob/vendor/github.com/mattn/go-zglob \
+		segmentio:kafka-go:v0.2.2:segmentio_kafka_go/vendor/github.com/segmentio/kafka-go
+
+GO_BUILDFLAGS=	-ldflags "-X main.version=${DISTVERSION}"
+GO_TARGET=	./cmd/chronograf \
+		./cmd/chronoctl
+
+OPTIONS_DEFINE=	MANPAGES
+OPTIONS_DEFAULT=MANPAGES
+OPTIONS_SUB=	yes
+
+MANPAGES_BUILD_DEPENDS=	xmlto:textproc/xmlto \
+		asciidoc:textproc/asciidoc \
+		docbook-xml>0:textproc/docbook-xml
+
+MANPAGES_USES=	gmake
+
+USERS=		${CHRONOGRAF_USER}
+GROUPS=		${CHRONOGRAF_GROUP}
+
+SUB_FILES=	chronograf
+SUB_LIST+=	CHRONOGRAF_PIDDIR=${CHRONOGRAF_PIDDIR}
+PLIST_SUB=	CHRONOGRAF_PIDDIR=${CHRONOGRAF_PIDDIR}
+
+#Use influxd user as it's aleary present in ports system
+CHRONOGRAF_USER=	influxd
+CHRONOGRAF_GROUP=	influxd
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && (${OSVERSION} < 1200000 || ${OSVERSION} >= 1200015)
+SUB_LIST+=	CHRONOGRAF_LOGCMD="daemon"
+.else
+SUB_LIST+=	CHRONOGRAF_LOGCMD="logger"
+.endif
+
+do-build-MANPAGES-on:
+	@cd ${WRKSRC}/man && ${SETENV} ${MAKE_ENV} ${MAKE_CMD}
+
+post-install:
+	@${SED} -i .bak -e \
+		"s|/var/lib/chronograf|/var/db/chronograf|g" \
+		${WRKSRC}/etc/${PORTNAME}/${PORTNAME}.conf
+	${INSTALL_DATA} \
+		${WRKSRC}/etc/${PORTNAME}.conf  \
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
+
+do-install-MANPAGES-on:
+	${INSTALL_MAN} ${WRKSRC}/man/*.1  ${STAGEDIR}${MANPREFIX}/man/man1
+
+.include <bsd.port.post.mk>

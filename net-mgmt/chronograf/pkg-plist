@@ -1,2 +1,2 @@
 bin/chronograf
-etc/rc.d/chronograf
+@sample etc/chronograf.conf.sample

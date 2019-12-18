@@ -1,0 +1,81 @@
+# Created by: Stefan Lambrev <cheffo@freebsd-bg.org>
+# $FreeBSD$
+
+PORTNAME=	chronograf
+DISTVERSION=	1.7.15
+CATEGORIES=	net-mgmt
+
+MAINTAINER=	cheffo@FreeBSD.org
+COMMENT=	Time-series data collection
+
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS= amd64 armv6 armv7 i386
+
+USES=		go
+
+#BUILD_DEPENDS=	go>=1.8.0:lang/go \
+#		yarn:www/yarn \
+#		phantomjs:lang/phantomjs \
+#		go-bindata:devel/go-bindata
+#
+
+USES=		gmake python:build
+
+USE_RC_SUBR=	chronograf
+
+USE_GITHUB=	yes
+
+GH_ACCOUNT=	influxdata:DEFAULT
+
+SUB_FILES=	chronograf
+SUB_LIST+=	CHRONOGRAF_PIDDIR=${CHRONOGRAF_PIDDIR}
+PLIST_SUB=	CHRONOGRAF_PIDDIR=${CHRONOGRAF_PIDDIR}
+
+#Use influxd user as it's aleary present in ports system
+CHRONOGRAFD_USER=        influxd
+CHRONOGRAFD_GROUP=       influxd
+
+USERS=          ${CHRONOGRAFD_USER}
+GROUPS=         ${CHRONOGRAFD_GROUP}
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == "FreeBSD" && (${OSVERSION} < 1200000 || ${OSVERSION} >= 1200015)
+SUB_LIST+=      KAPACITORD_LOGCMD="daemon"
+.else
+SUB_LIST+=      KAPACITORD_LOGCMD="logger"
+.endif
+
+post-install:
+	@${SED} -i .bak -e \
+		"s|/var/lib/chronograf|/var/db/chronograf|g" \
+		${WRKSRC}/etc/${PORTNAME}/${PORTNAME}.conf
+	${INSTALL_DATA} \
+		${WRKSRC}/etc/${PORTNAME}/${PORTNAME}.conf  \
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
+
+#post-patch:
+#	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
+#	@cd ${WRKSRC} && ${MV} \
+#	Makefile bolt canned chronograf.go circle.yml cmd dist docs enterprise \
+#	etc filestore id influx integrations kapacitor kapacitor.go log memdb \
+#	mocks multistore noop oauth2 organizations roles server ui vendor \
+#		${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
+
+#do-build:
+#	cd ${WRKDIR} && ${SETENV} HOME=${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui yarn config set cache-folder ${WRKDIR}/.yarn_cache --offline
+#	cd ${WRKDIR} && ${SETENV} HOME=${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui yarn config set yarn-offline-mirror ${PORTSDIR}/distfiles/ --offline
+#	cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui && ${SETENV} ${MAKE_ENV} PYTHON=${PYTHON_CMD} HOME=${WRKSRC}/src/github.com/influxdata/${PORTNAME}/ui \
+#		yarn --no-progress --no-emoji --offline
+#	cd ${WRKSRC}/src/github.com/influxdata/${PORTNAME} && \
+#		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} ${GMAKE} build
+#		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} go install -ldflags "-X main.version=${DISTVERSION}" ./...
+
+#do-install:
+#	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+.include <bsd.port.post.mk>
+
+#.include <bsd.port.mk>
