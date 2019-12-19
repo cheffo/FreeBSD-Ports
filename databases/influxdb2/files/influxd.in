@@ -11,8 +11,6 @@
 #
 # influxd_enable (bool):	Set to YES to enable influxd
 #				Default: NO
-# influxd_conf (str):		influxd configuration file
-#				Default: ${PREFIX}/etc/influxd.conf
 # influxd_user (str):		influxd daemon user
 #				Default: influxd
 # influxd_group (str):		influxd daemon group
@@ -33,11 +31,10 @@ load_rc_config $name
 : ${influxd_enable:="NO"}
 : ${influxd_user:="%%INFLUXD_USER%%"}
 : ${influxd_group:="%%INFLUXD_GROUP%%"}
-: ${influxd_flags:=""}
+: ${influxd_flags:="--bolt-path=/var/db/influxdb/influxd.bolt --engine-path=/var/db/influxdb/engine"}
 : ${influxd_facility:="daemon"}
 : ${influxd_priority:="info"}
-: ${influxd_conf:="%%PREFIX%%/etc/${name}.conf"}
-: ${influxd_options:="${influxd_flags} -config=${influxd_conf}"}
+: ${influxd_options:="${influxd_flags}"}
 
 # daemon
 influxd_pidfile="%%INFLUXD_PIDDIR%%${name}.pid"

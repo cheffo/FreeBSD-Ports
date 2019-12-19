@@ -3,6 +3,6 @@ bin/chronograf
 bin/influx
 bin/influxd
 bin/telemetryd
-@dir /var/db/influxdb
-@dir /var/log/influxdb
-@dir /var/run/influxdb
+@dir(%%INFLUXD_USER%%,%%INFLUXD_GROUP%%,0750) %%INFLUXD_DBDIR%%
+@dir(%%INFLUXD_USER%%,%%INFLUXD_GROUP%%,0750) %%INFLUXD_LOGDIR%%
+@dir(%%INFLUXD_USER%%,%%INFLUXD_GROUP%%,0750) %%INFLUXD_PIDDIR%%
